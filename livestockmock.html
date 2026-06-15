@@ -3,116 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Livestock Production MJPRU Mock Test - Razaagripoint</title>
+    <title>Livestock Production Mock Test - Premium Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --primary: #2e7d32;
-            --primary-light: #81c784;
-            --dark: #1b5e20;
-            --accent: #ffca28;
-            --bg: #f1f8e9;
+            --primary: #00b09b;
+            --primary-dark: #00838f;
+            --accent: #ffb300;
+            --bg-gradient: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
             --white: #ffffff;
-            --text: #2c3e50;
-            --shadow: 0 10px 30px rgba(27, 94, 32, 0.1);
+            --text-dark: #1a202c;
+            --text-gray: #4a5568;
+            --correct-bg: #c6f6d5;
+            --correct-border: #38a169;
+            --correct-text: #22543d;
+            --wrong-bg: #fed7d7;
+            --wrong-border: #e53e3e;
+            --wrong-text: #742a2a;
+            --shadow: 0 20px 40px rgba(0, 131, 143, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+        body { background: var(--bg-gradient); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* --- Navbar --- */
-        nav { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
-        .logo { color: var(--primary); font-size: 24px; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 10px; }
-        .exit-btn { background: #fff3e0; color: #e65100; text-decoration: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 14px; transition: 0.3s; border: 1px solid #ffe0b2; }
-        .exit-btn:hover { background: #e65100; color: var(--white); }
+        /* Background Blobs */
+        .blob { position: fixed; border-radius: 50%; filter: blur(60px); z-index: -1; animation: floatBlob 10s infinite alternate; }
+        .blob-1 { width: 300px; height: 300px; background: rgba(0, 176, 155, 0.3); top: -100px; left: -100px; }
+        .blob-2 { width: 400px; height: 400px; background: rgba(255, 179, 0, 0.2); bottom: -150px; right: -100px; animation-delay: 2s; }
+        @keyframes floatBlob { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, 50px) scale(1.1); } }
 
-        /* --- Main Layout Container --- */
-        .container { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 30px 20px; }
-        .quiz-card { background: var(--white); width: 100%; max-width: 800px; border-radius: 24px; box-shadow: var(--shadow); padding: 40px; position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,0.03); }
+        /* Navbar */
+        nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 1px solid rgba(255,255,255,0.5); }
+        .logo { color: var(--primary-dark); font-size: 24px; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .exit-btn { background: #ffebee; color: #d32f2f; text-decoration: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 14px; transition: 0.3s; border: 1px solid #ffcdd2; }
+        .exit-btn:hover { background: #d32f2f; color: var(--white); }
 
-        /* --- 1. Language Screen --- */
+        /* Layout Container */
+        .container { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; z-index: 1; }
+        .quiz-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); width: 100%; max-width: 900px; border-radius: 30px; box-shadow: var(--shadow); padding: 50px; position: relative; border: 1px solid rgba(255,255,255,0.8); }
+
+        /* --- 1. Multi-Test Welcome Screen --- */
         .lang-screen { text-align: center; }
-        .lang-screen i.main-icon { font-size: 60px; color: var(--primary-light); margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
-        .lang-screen h1 { font-size: 32px; color: var(--dark); font-weight: 800; margin-bottom: 10px; }
-        .lang-screen p { color: #666; margin-bottom: 40px; font-size: 16px; }
-        .lang-btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 500px; margin: 0 auto; }
-        .lang-btn { background: var(--white); border: 2px solid #e0e0e0; border-radius: 16px; padding: 25px 20px; font-size: 18px; font-weight: 700; color: var(--dark); cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .lang-btn:hover { border-color: var(--primary-light); background: #f1f8e9; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(27,94,32,0.1); }
-        .lang-btn span { font-size: 13px; color: #777; font-weight: 400; }
+        .welcome-badge { background: linear-gradient(90deg, #ff9800, #ffb300); color: #fff; padding: 8px 25px; border-radius: 30px; font-weight: 800; font-size: 14px; display: inline-block; margin-bottom: 15px; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(255, 179, 0, 0.3); }
+        .lang-screen i.main-icon { font-size: 70px; background: -webkit-linear-gradient(var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; filter: drop-shadow(0 10px 10px rgba(0, 131, 143, 0.2)); animation: bounceIcon 3s ease-in-out infinite; }
+        .lang-screen h1 { font-size: 38px; color: var(--primary-dark); font-weight: 800; margin-bottom: 10px; }
+        .lang-screen p { color: var(--text-gray); margin-bottom: 35px; font-size: 16px; line-height: 1.6; max-width: 650px; margin-left: auto; margin-right: auto; }
+        @keyframes bounceIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        /* THE PREMIUM TEST SELECTION CARDS */
+        .test-options-container { display: flex; flex-direction: column; gap: 20px; max-width: 750px; margin: 0 auto; }
+        
+        .test-selection-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 20px 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-selection-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
+        
+        .t-card-1 { border-color: #ffb300; background: linear-gradient(to right, #ffffff, #fffdf2); }
+        .t-card-2 { border-color: #00b09b; background: linear-gradient(to right, #ffffff, #e0f2f1); }
+        .t-card-3 { border-color: #ab47bc; background: linear-gradient(to right, #ffffff, #f3e5f5); }
+        
+        .t-card-1::before { content: 'RECOMMENDED'; position: absolute; top: 12px; right: -35px; background: #ffb300; color: #fff; font-size: 11px; font-weight: 900; padding: 5px 40px; transform: rotate(45deg); letter-spacing: 1px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        .t-icon-box { width: 75px; height: 75px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #fff; flex-shrink: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .t-icon-1 { background: linear-gradient(135deg, #ffb300, #ff8f00); }
+        .t-icon-2 { background: linear-gradient(135deg, #00b09b, #00838f); }
+        .t-icon-3 { background: linear-gradient(135deg, #ab47bc, #6a1b9a); }
+
+        .t-details { flex-grow: 1; text-align: left; padding: 0 25px; }
+        .t-details h3 { font-size: 22px; color: var(--text-dark); margin-bottom: 5px; font-weight: 800; }
+        .t-details p { font-size: 15px; color: var(--text-gray); font-weight: 500; margin: 0; }
+
+        .t-start-btn { padding: 14px 30px; border-radius: 15px; font-size: 16px; font-weight: 800; color: #fff; border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); white-space: nowrap; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .t-start-btn:hover { transform: scale(1.05); }
+        .t-btn-1 { background: linear-gradient(135deg, #ffb300, #ff8f00); }
+        .t-btn-2 { background: linear-gradient(135deg, #00b09b, #00838f); }
+        .t-btn-3 { background: linear-gradient(135deg, #ab47bc, #6a1b9a); }
+
+        @media (max-width: 700px) {
+            .test-selection-card { flex-direction: column; text-align: center; gap: 15px; padding: 25px 20px; }
+            .t-details { padding: 0; text-align: center; }
+            .t-card-1::before { display: none; }
+        }
 
         /* --- 2. Quiz Screen --- */
         .quiz-screen { display: none; }
-        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px; }
-        .q-count { font-weight: 700; color: var(--primary); background: #e8f5e9; padding: 4px 15px; border-radius: 15px; font-size: 14px; }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #edf2f7; padding-bottom: 15px; }
+        .q-count { font-weight: 800; color: var(--white); background: var(--primary-dark); padding: 6px 20px; border-radius: 20px; font-size: 15px; box-shadow: 0 4px 10px rgba(0, 131, 143, 0.2); }
+        .test-title-indicator { font-weight: 800; color: #ff8f00; font-size: 18px; text-transform: uppercase; background: #fff8e1; padding: 5px 15px; border-radius: 10px; border: 1px solid #ffe082;}
         
-        .progress-container { width: 100%; background: #eee; height: 8px; border-radius: 4px; margin-bottom: 30px; overflow: hidden; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary)); width: 0%; transition: width 0.3s ease; }
+        .progress-container { width: 100%; background: #e2e8f0; height: 10px; border-radius: 5px; margin-bottom: 30px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-dark)); width: 0%; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        .question-text { font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 25px; line-height: 1.4; }
+        .question-text { font-size: 24px; font-weight: 700; color: var(--text-dark); margin-bottom: 30px; line-height: 1.5; }
+        .options-grid { display: flex; flex-direction: column; gap: 15px; margin-bottom: 35px; }
         
-        .options-grid { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-        .option { background: #fdfdfd; border: 2px solid #f0f0f0; border-radius: 14px; padding: 18px 25px; font-size: 16px; font-weight: 500; text-align: left; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: space-between; }
-        .option:hover { background: #f1f8e9; border-color: #c8e6c9; }
-        .option.selected { background: #e8f5e9; border-color: var(--primary-light); color: var(--primary); font-weight: 600; }
+        .option { background: var(--white); border: 2px solid #e2e8f0; border-radius: 16px; padding: 20px 25px; font-size: 17px; font-weight: 600; text-align: left; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: space-between; color: var(--text-gray); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .option:not(.locked):hover { background: #f7fafc; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 131, 143, 0.1); color: var(--primary-dark); }
+        .option.correct { background: var(--correct-bg) !important; border-color: var(--correct-border) !important; color: var(--correct-text) !important; box-shadow: 0 0 15px rgba(56, 161, 105, 0.4) !important; }
+        .option.wrong { background: var(--wrong-bg) !important; border-color: var(--wrong-border) !important; color: var(--wrong-text) !important; box-shadow: 0 0 15px rgba(229, 62, 62, 0.4) !important; }
+        
+        .anim-pop { animation: popGlow 0.5s ease-out forwards; }
+        .anim-shake { animation: shake 0.4s ease-in-out forwards; }
+        @keyframes popGlow { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 50% { transform: translateX(8px); } 75% { transform: translateX(-8px); } }
 
-        .quiz-footer { display: flex; justify-content: space-between; align-items: center; }
-        .nav-btn { background: var(--primary); color: var(--white); border: none; padding: 14px 35px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .nav-btn:hover { background: var(--dark); transform: translateY(-2px); }
-        .nav-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .quiz-footer { display: flex; justify-content: flex-end; align-items: center; }
+        .nav-btn { background: var(--primary-dark); color: var(--white); border: none; padding: 15px 40px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(0, 131, 143, 0.2); }
+        .nav-btn:hover { background: #006064; transform: translateY(-2px); }
+        .nav-btn:disabled { background: #cbd5e0; color: #a0aec0; cursor: not-allowed; transform: none; box-shadow: none; }
 
         /* --- 3. Result Screen --- */
         .result-screen { display: none; text-align: center; }
-        .result-screen .congrats-icon { font-size: 70px; color: var(--accent); margin-bottom: 20px; animation: bounce 2s infinite; }
-        .result-screen h2 { font-size: 36px; font-weight: 800; color: var(--dark); margin-bottom: 15px; }
-        .message-box { font-size: 18px; color: #555; max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6; font-weight: 500; }
+        .result-screen .congrats-icon { font-size: 80px; color: var(--accent); margin-bottom: 20px; animation: bounceIcon 2s infinite; filter: drop-shadow(0 10px 10px rgba(255,179,0,0.3)); }
+        .result-screen h2 { font-size: 40px; font-weight: 800; color: var(--primary-dark); margin-bottom: 15px; }
+        .message-box { font-size: 18px; color: var(--text-gray); max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6; font-weight: 500; }
         
-        .score-circle { width: 160px; height: 160px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 40px auto; box-shadow: 0 10px 25px rgba(27,94,32,0.3); }
-        .score-circle h1 { font-size: 46px; font-weight: 800; line-height: 1; }
-        .score-circle span { font-size: 14px; opacity: 0.8; font-weight: 500; text-transform: uppercase; margin-top: 5px; }
+        .score-circle { width: 180px; height: 180px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 30px auto; box-shadow: 0 15px 30px rgba(0, 131, 143, 0.4); border: 5px solid #e0f2f1; }
+        .score-circle h1 { font-size: 56px; font-weight: 800; line-height: 1; margin-bottom: 0; }
+        .score-circle span { font-size: 16px; opacity: 0.9; font-weight: 600; text-transform: uppercase; margin-top: 5px; }
 
-        .restart-btn { background: var(--accent); color: var(--dark); border: none; padding: 15px 40px; border-radius: 30px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(255,202,40,0.4); }
-        .restart-btn:hover { background: #ffb300; transform: scale(1.05); }
+        /* Certificate Box */
+        .cert-container { background: rgba(0, 131, 143, 0.04); border: 2px dashed var(--primary); padding: 30px; border-radius: 20px; margin-bottom: 35px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.02); }
+        .cert-container h3 { color: var(--primary-dark); font-size: 20px; margin-bottom: 10px; font-weight: 700; }
+        .cert-input { width: 100%; max-width: 400px; padding: 14px 20px; border: 2px solid #b2dfdb; border-radius: 12px; font-size: 16px; font-weight: 600; text-align: center; margin-bottom: 15px; outline: none; transition: 0.3s; }
+        .cert-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0,176,155,0.2); }
+        .cert-btn { background: linear-gradient(135deg, #ff9800, #ff5722); color: white; border: none; padding: 14px 35px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(255,87,34,0.3); display: inline-flex; align-items: center; gap: 10px; }
+        .cert-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,87,34,0.4); }
 
-        /* --- Animations --- */
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 60% { transform: translateY(-10px); } }
+        .restart-btn { background: #e2e8f0; color: var(--text-dark); border: none; padding: 15px 40px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .restart-btn:hover { background: #cbd5e0; }
 
-        footer { text-align: center; padding: 25px; margin-top: auto; border-top: 1px solid #eee; background: #fff; }
+        footer { text-align: center; padding: 25px; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.7); backdrop-filter: blur(5px); z-index: 1; }
     </style>
 </head>
 <body>
 
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
     <nav>
         <a href="index.html" class="logo"><i class="fa-solid fa-cow"></i> Razaagripoint</a>
-        <a href="semester2.html" class="exit-btn"><i class="fa-solid fa-xmark"></i> Exit Test</a>
+        <a href="index.html" class="exit-btn"><i class="fa-solid fa-xmark"></i> Exit</a>
     </nav>
 
     <div class="container">
         <div class="quiz-card">
             
+            <!-- Multi-Test Welcome Screen -->
             <div id="langScreen" class="lang-screen">
-                <i class="fa-solid fa-paw main-icon"></i>
-                <h1>Livestock Production Mock Test</h1>
-                <p>MJPRU Bareilly Syllabus Pattern • 50 Questions • 50 Marks</p>
+                <div class="welcome-badge">⭐ THE ULTIMATE TEST PORTAL</div>
+                <br>
+                <i class="fa-solid fa-cow main-icon"></i>
+                <h1>Livestock Production and Management</h1>
+                <p>Welcome! यहाँ आपको पशुपालन (Livestock Management) के <b>150 Unique Questions</b> के 3 अलग-अलग प्रीमियम टेस्ट मिलेंगे। अपनी तैयारी के हिसाब से कोई भी टेस्ट सेलेक्ट करें!</p>
                 
-                <div class="lang-btn-grid">
-                    <button class="lang-btn" onclick="startQuiz('hi')">
-                        हिन्दी टेस्ट
-                        <span>पशुपालन एवं प्रबंधन - हिंदी माध्यम</span>
-                    </button>
-                    <button class="lang-btn" onclick="startQuiz('en')">
-                        English Test
-                        <span>Livestock Production - English Medium</span>
-                    </button>
+                <div class="test-options-container">
+                    <!-- Main Test 1 -->
+                    <div class="test-selection-card t-card-1">
+                        <div class="t-icon-box t-icon-1"><i class="fa-solid fa-star"></i></div>
+                        <div class="t-details">
+                            <h3>YouTube Video Test</h3>
+                            <p>50 Most Expected Breeds & Terms MCQs</p>
+                        </div>
+                        <button class="t-start-btn t-btn-1" onclick="startQuiz(1)">
+                            Start Test <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+
+                    <!-- Practice Test 2 -->
+                    <div class="test-selection-card t-card-2">
+                        <div class="t-icon-box t-icon-2"><i class="fa-solid fa-flask"></i></div>
+                        <div class="t-details">
+                            <h3>2nd Test (Advanced)</h3>
+                            <p>50 Fresh Nutrition & Housing MCQs</p>
+                        </div>
+                        <button class="t-start-btn t-btn-2" onclick="startQuiz(2)">
+                            Start Test <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+
+                    <!-- Final Test 3 -->
+                    <div class="test-selection-card t-card-3">
+                        <div class="t-icon-box t-icon-3"><i class="fa-solid fa-award"></i></div>
+                        <div class="t-details">
+                            <h3>Mega Practice Test</h3>
+                            <p>50 Hard Diseases & Poultry MCQs</p>
+                        </div>
+                        <button class="t-start-btn t-btn-3" onclick="startQuiz(3)">
+                            Start Test <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
+            <!-- Quiz Screen -->
             <div id="quizScreen" class="quiz-screen">
                 <div class="quiz-header">
                     <span id="questionCount" class="q-count">Question 1 of 50</span>
+                    <span id="testTitleIndicator" class="test-title-indicator">YouTube Video Test</span>
                 </div>
                 
                 <div class="progress-container">
@@ -124,13 +225,13 @@
                 <div id="optionsGrid" class="options-grid"></div>
 
                 <div class="quiz-footer">
-                    <button id="prevBtn" class="nav-btn" onclick="prevQuestion()" disabled><i class="fa-solid fa-arrow-left"></i> Previous</button>
-                    <button id="nextBtn" class="nav-btn" onclick="nextQuestion()">Next <i class="fa-solid fa-arrow-right"></i></button>
+                    <button id="nextBtn" class="nav-btn" onclick="nextQuestion()" disabled>Next Question <i class="fa-solid fa-arrow-right"></i></button>
                 </div>
             </div>
 
+            <!-- Result Screen -->
             <div id="resultScreen" class="result-screen">
-                <div id="congratsIcon" class="congrats-icon"><i class="fa-solid fa-award"></i></div>
+                <div id="congratsIcon" class="congrats-icon"><i class="fa-solid fa-trophy"></i></div>
                 <h2 id="resultHeading">Great Job!</h2>
                 <div id="messageBox" class="message-box">Results loading...</div>
                 
@@ -139,139 +240,501 @@
                     <span>Out of 50</span>
                 </div>
 
-                <button class="restart-btn" onclick="restartQuiz()"><i class="fa-solid fa-rotate-right"></i> Retake Test</button>
+                <div class="cert-container">
+                    <h3>🏆 Download Your Topper Certificate</h3>
+                    <p style="font-size: 14px; color: var(--text-gray); margin-bottom: 15px;">अपना पूरा नाम नीचे बॉक्स में लिखें और एक <b>Professional High-Quality Certificate</b> तुरंत डाउनलोड करें:</p>
+                    <input type="text" id="studentName" class="cert-input" placeholder="Yahan Apna Naam Likhein">
+                    <br>
+                    <button class="cert-btn" onclick="generateCertificate()"><i class="fa-solid fa-file-arrow-down"></i> Get My Premium Certificate</button>
+                </div>
+
+                <button class="restart-btn" onclick="restartQuiz()"><i class="fa-solid fa-rotate-right"></i> Choose Another Test</button>
             </div>
 
         </div>
     </div>
+
+    <!-- 🔥 EXAM BOOSTER QUICK FACTS SECTION 🔥 -->
+    <style>
+        .quick-facts-wrapper { max-width: 900px; margin: 40px auto; background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 40px; box-shadow: 0 15px 35px rgba(0, 131, 143, 0.1); border: 2px solid #e0f2f1; z-index: 1; position: relative; }
+        .qf-header { text-align: center; margin-bottom: 30px; }
+        .qf-header h2 { font-size: 32px; color: #00838f; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; }
+        .qf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; }
+        .qf-item { background: #ffffff; border-left: 5px solid #00b09b; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .qf-item:hover { transform: translateX(5px); box-shadow: 0 6px 15px rgba(0,176,155,0.15); }
+        
+        /* Custom Border Colors */
+        .border-gold { border-left-color: #ffb300; }
+        .border-blue { border-left-color: #2196f3; }
+        .border-red { border-left-color: #e53935; }
+
+        .qf-question { font-size: 15px; font-weight: 600; color: #4a5568; max-width: 65%; line-height: 1.4; }
+        
+        .qf-answer { padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 800; text-align: right; border: 1px solid transparent; }
+        .ans-green { background: #e0f2f1; color: #00838f; border-color: #b2dfdb; }
+        .ans-gold { background: #fff8e1; color: #f57f17; border-color: #ffe082; }
+        .ans-blue { background: #e3f2fd; color: #1976d2; border-color: #bbdefb; }
+        .ans-red { background: #ffebee; color: #c62828; border-color: #ffcdd2; }
+        
+        @media (max-width: 600px) { .qf-item { flex-direction: column; text-align: center; gap: 10px; } .qf-question { max-width: 100%; } }
+    </style>
+
+    <div class="quick-facts-wrapper">
+        <div class="qf-header">
+            <h2><i class="fa-solid fa-bolt" style="color: #ffb300;"></i> Exam Booster: Top 15 One-Liners</h2>
+            <p style="color: #718096; font-size: 16px; font-weight: 500;">एग्ज़ाम से 10 मिनट पहले बस इसे पढ़ लेना, सीधे सवाल फसेंगे!</p>
+        </div>
+        <div class="qf-grid">
+            <div class="qf-item"><div class="qf-question">गाय का गर्भकाल (Gestation period)</div><div class="qf-answer ans-green">281-285 दिन</div></div>
+            <div class="qf-item border-gold"><div class="qf-question">भैंस का गर्भकाल</div><div class="qf-answer ans-gold">310 दिन</div></div>
+            <div class="qf-item"><div class="qf-question">सबसे ज्यादा दूध देने वाली गाय (विश्व)</div><div class="qf-answer ans-green">होल्स्टीन फ्रीजियन (HF)</div></div>
+            <div class="qf-item border-blue"><div class="qf-question">सबसे ज्यादा वसा (Fat) वाली भैंस</div><div class="qf-answer ans-blue">भदावरी (13-14%)</div></div>
+            <div class="qf-item border-red"><div class="qf-question">वीर्य (Semen) का संरक्षण तापमान</div><div class="qf-answer ans-red">-196°C (तरल N2)</div></div>
+            <div class="qf-item border-red"><div class="qf-question">दूध उतारने (Milk Letdown) का हार्मोन</div><div class="qf-answer ans-red">ऑक्सीटोसिन (Oxytocin)</div></div>
+            <div class="qf-item"><div class="qf-question">मुर्गियों में रानीखेत बीमारी का कारण</div><div class="qf-answer ans-green">वायरस (Virus)</div></div>
+            <div class="qf-item border-gold"><div class="qf-question">जन्म के तुरंत बाद नवजात को पिलाना चाहिए</div><div class="qf-answer ans-gold">खीस (Colostrum)</div></div>
+            <div class="qf-item border-blue"><div class="qf-question">गरीब की गाय (Poor man's cow)</div><div class="qf-answer ans-blue">बकरी (Goat)</div></div>
+            <div class="qf-item border-gold"><div class="qf-question">दूध दूहने की सबसे अच्छी विधि</div><div class="qf-answer ans-gold">पूर्ण हस्त विधि (Full hand)</div></div>
+            <div class="qf-item border-red"><div class="qf-question">मुर्गी के अंडे सेने (Incubation) का समय</div><div class="qf-answer ans-red">21 दिन</div></div>
+            <div class="qf-item"><div class="qf-question">गाय के मांस को क्या कहते हैं?</div><div class="qf-answer ans-green">बीफ (Beef)</div></div>
+            <div class="qf-item border-blue"><div class="qf-question">भेड़ के मांस को क्या कहते हैं?</div><div class="qf-answer ans-blue">मटन (Mutton)</div></div>
+            <div class="qf-item border-gold"><div class="qf-question">सबसे अच्छी अंडे देने वाली मुर्गी की नस्ल</div><div class="qf-answer ans-gold">वाइट लेगहॉर्न (White Leghorn)</div></div>
+            <div class="qf-item border-red"><div class="qf-question">थनैला (Mastitis) रोग संबंधित है</div><div class="qf-answer ans-red">अयन/थन (Udder) से</div></div>
+        </div>
+    </div>
+    <!-- END QUICK FACTS SECTION -->
 
     <footer>
         <p style="font-size: 14px; color: #888;">Designed by <b>MUSHAHID RAZA</b> with ❤️ for BSc Agriculture Students</p>
     </footer>
 
     <script>
-        // High-Yield MJPRU Syllabus Questions for Livestock Production & Management
-        const quizData = {
-            en: [
-                { q: "Which buffalo breed is famous for its sickle-shaped horns?", o: ["Murrah", "Surti", "Bhadawari", "Nili-Ravi"], a: 1 },
-                { q: "What is the average gestation period of a dairy cow?", o: ["283 days", "310 days", "150 days", "114 days"], a: 0 },
-                { q: "Which buffalo breed is known for the highest fat percentage in its milk?", o: ["Murrah", "Bhadawari", "Surti", "Mehsana"], a: 1 },
-                { q: "The first milk secreted by a mammal after parturition is called:", o: ["Skimmed milk", "Colostrum", "Toned milk", "Pasteurized milk"], a: 1 },
-                { q: "Which goat breed is commonly known as the 'Milk Queen' of the world?", o: ["Saanen", "Jamunapari", "Barbari", "Beetal"], a: 0 },
-                { q: "The average gestation period of a buffalo is approximately:", o: ["283 days", "310 days", "150 days", "145 days"], a: 1 },
-                { q: "Which Indian cattle breed is highly renowned for its aggressive nature and fast draft capacity?", o: ["Sahiwal", "Amritmahal", "Gir", "Sindhi"], a: 1 },
-                { q: "The dry matter requirement for an adult dairy cow per 100 kg body weight is:", o: ["1.0 to 1.5 kg", "2.0 to 2.5 kg", "4.0 to 4.5 kg", "5.0 kg"], a: 1 },
-                { q: "Which system of poultry housing is most commercial and widely used in India?", o: ["Deep Litter System", "Cage System", "Free Range System", "Semi-Intensive System"], a: 1 },
-                { q: "The optimum temperature required for the incubation of chicken eggs is:", o: ["95°F", "99.5°F", "105°F", "102°F"], a: 1 },
-                { q: "Which exotic cattle breed produces the maximum amount of milk per lactation?", o: ["Jersey", "Holstein-Friesian", "Brown Swiss", "Red Dane"], a: 1 },
-                { q: "The process of removing unproductive or sick animals from a livestock herd is called:", o: ["Dehorning", "Culling", "Castration", "Weaning"], a: 1 },
-                { q: "Which disease of dairy animals is completely viral and highly contagious?", o: ["Mastitis", "Foot and Mouth Disease (FMD)", "Anthrax", "Milk Fever"], a: 1 },
-                { q: "Milk fever in high-yielding dairy animals is caused due to the deficiency of:", o: ["Phosphorus", "Calcium", "Magnesium", "Iron"], a: 1 },
-                { q: "The ideal floor space requirement for an adult loose-housed dairy cow in a covered area is:", o: ["3.5 m²", "7.0 m²", "12 m²", "1.5 m²"], a: 0 }
-            ],
-            hi: [
-                { q: "हंसिया के आकार (Sickle-shaped) के सींग किस भैंस की नस्ल की मुख्य विशेषता है?", o: ["मुर्राह", "सूरती", "भदावरी", "नीली-रावी"], a: 1 },
-                { q: "एक दुधारू गाय की औसत गर्भकाल अवधि (Gestation Period) कितनी होती है?", o: ["283 दिन", "310 दिन", "150 दिन", "114 दिन"], a: 0 },
-                { q: "भैंस की किस नस्ल के दूध में वसा (Fat) का प्रतिशत सबसे अधिक होता है?", o: ["मुर्राह", "भदावरी", "सूरती", "मेहसाना"], a: 1 },
-                { q: "प्रसव के तुरंत बाद पशु द्वारा स्रावित होने वाले पहले गाढ़े दूध को क्या कहते हैं?", o: ["मलाई रहित दूध", "खीस (Colostrum)", "टोन्ड दूध", "पाश्चुरीकृत दूध"], a: 1 },
-                { q: "बकरी की किस नस्ल को विश्व की 'दूध की रानी' (Milk Queen) कहा जाता है?", o: ["सानेन", "जमुनापारी", "बरबरी", "बीटल"], a: 0 },
-                { q: "भैंस की औसत गर्भकाल अवधि (Gestation Period) लगभग कितनी होती है?", o: ["283 दिन", "310 दिन", "150 दिन", "145 दिन"], a: 1 },
-                { q: "कौन सी भारतीय गाय की नस्ल अपने फुर्तीले स्वभाव और तेज गति से भार खींचने के लिए प्रसिद्ध है?", o: ["साहीवाल", "अमृतमहल", "गीर", "सिन्धी"], a: 1 },
-                { q: "एक वयस्क दुधारू गाय के लिए प्रति 100 किलोग्राम शारीरिक वजन पर शुष्क पदार्थ (Dry Matter) की आवश्यकता कितनी होती है?", o: ["1.0 से 1.5 किग्रा", "2.0 से 2.5 किग्रा", "4.0 से 4.5 किग्रा", "5.0 किग्रा"], a: 1 },
-                { q: "भारत में व्यावसायिक कुक्कुट पालन (Poultry) के लिए कौन सी आवास प्रणाली सबसे अधिक उपयोग की जाती है?", o: ["डीप लिटर प्रणाली", "पिंजरा (Cage) प्रणाली", "मुक्त क्षेत्र प्रणाली", "अर्ध-सघन प्रणाली"], a: 1 },
-                { q: "मुर्गी के अंडों के कृत्रिम सेयन (Incubation) के लिए आवश्यक सर्वोत्तम तापमान कितना है?", o: ["95°F", "99.5°F", "105°F", "102°F"], a: 1 },
-                { q: "प्रति ब्यांत सबसे अधिक दूध का उत्पादन करने वाली विदेशी गाय की नस्ल कौन सी है?", o: ["जर्सी", "होलस्टीन-फ्रिजियन", "ब्राउन स्विस", "रेड डेन"], a: 1 },
-                { q: "पशुधन झुंड से अनुत्पादक या बीमार पशुओं को बाहर निकालने की प्रक्रिया को क्या कहते हैं?", o: ["डीहॉर्निंग", "कलिंग (Culling)", "बधियाकरण", "वीनिंग"], a: 1 },
-                { q: "दुधारू पशुओं का कौन सा रोग पूरी तरह से विषाणुजनित (Viral) और अत्यधिक संक्रामक है?", o: ["थनैल (Mastitis)", "खुरपका-मुंहपका रोग (FMD)", "एंथ्रेक्स", "मिल्क फीवर"], a: 1 },
-                { q: "अधिक दूध देने वाले पशुओं में 'मिल्क फीवर' (Milk Fever) रोग किसकी कमी के कारण होता है?", o: ["फास्फोरस", "कैल्शियम", "मैग्नीशियम", "लोहा"], a: 1 },
-                { q: "वयस्क गाय के लिए कवर्ड एरिया में उपयुक्त फर्श स्थान (Floor Space) की कितनी आवश्यकता होती है?", o: ["3.5 वर्ग मीटर", "7.0 वर्ग मीटर", "12 वर्ग मीटर", "1.5 वर्ग मीटर"], a: 0 }
-            ]
-        };
+        // TEST 1: Breeds, Terminology, Basic Management (50 Questions)
+        const test1Data = [
+            { q: "भारत में 'श्वेत क्रांति' (White Revolution) का जनक किसे कहा जाता है?", o: ["A) डॉ. एम. एस. स्वामीनाथन", "B) डॉ. वर्गीज कुरियन", "C) नॉर्मन बोरलॉग", "D) आर. एस. परोदा"], a: 1, exps: ["हरित क्रांति (भारत)", "ऑपरेशन फ्लड के प्रणेता", "हरित क्रांति (विश्व)", "पूर्व DG, ICAR"] },
+            { q: "राष्ट्रीय डेयरी अनुसंधान संस्थान (NDRI) कहाँ स्थित है?", o: ["A) नई दिल्ली", "B) आनंद (गुजरात)", "C) करनाल (हरियाणा)", "D) इज्जतनगर (यूपी)"], a: 2, exps: ["ICAR मुख्यालय", "अमूल का मुख्यालय", "NDRI मुख्यालय", "IVRI मुख्यालय"] },
+            { q: "भारतीय पशु चिकित्सा अनुसंधान संस्थान (IVRI) कहाँ स्थित है?", o: ["A) करनाल", "B) इज्जतनगर (बरेली)", "C) मथुरा", "D) हिसार"], a: 1, exps: ["NDRI स्थित है", "IVRI स्थित है", "CIRG (बकरी) स्थित है", "CIRB (भैंस) स्थित है"] },
+            { q: "गाय का वैज्ञानिक नाम क्या है?", o: ["A) बॉस ब्यूबेलिस", "B) बॉस इंडिकस", "C) कैप्रा हिरकस", "D) ओविस एरीज़"], a: 1, exps: ["भैंस का नाम", "देसी गाय का नाम", "बकरी का नाम", "भेड़ का नाम"] },
+            { q: "भैंस (भारतीय/जलीय भैंस) का वैज्ञानिक नाम क्या है?", o: ["A) बॉस इंडिकस", "B) बुबेलस ब्यूबेलिस", "C) कैप्रा हिरकस", "D) गैलस गैलस"], a: 1, exps: ["गाय का नाम", "नदी भैंस का नाम", "बकरी का नाम", "मुर्गी का नाम"] },
+            { q: "बकरी (Goat) का वैज्ञानिक नाम क्या है?", o: ["A) कैप्रा हिरकस", "B) ओविस एरीज़", "C) सुस स्क्रोफा", "D) बॉस टारस"], a: 0, exps: ["बकरी का नाम", "भेड़ का नाम", "सुअर का नाम", "विदेशी गाय का नाम"] },
+            { q: "भेड़ (Sheep) का वैज्ञानिक नाम क्या है?", o: ["A) ओविस एरीज़", "B) कैप्रा हिरकस", "C) सुस स्क्रोफा", "D) गैलस गैलस"], a: 0, exps: ["भेड़ का नाम", "बकरी का नाम", "सुअर का नाम", "मुर्गी का नाम"] },
+            { q: "गाय में गुणसूत्रों (Chromosomes) की संख्या कितनी होती है?", o: ["A) 48", "B) 50", "C) 60", "D) 78"], a: 2, exps: ["दलदली भैंस में", "नदी भैंस में", "गाय व बकरी में", "मुर्गी/कुत्ते में"] },
+            { q: "नदी वाली भैंस (Water Buffalo) में गुणसूत्रों की संख्या कितनी होती है?", o: ["A) 48", "B) 50", "C) 60", "D) 78"], a: 1, exps: ["दलदली भैंस में", "नदी भैंस में", "गाय में", "मुर्गी में"] },
+            { q: "गाय के ब्याने (जन्म देने) की प्रक्रिया को क्या कहते हैं?", o: ["A) किडिंग", "B) काविंग", "C) लैम्बिंग", "D) फैरोइंग"], a: 1, exps: ["बकरी का ब्याना", "गाय/भैंस का ब्याना", "भेड़ का ब्याना", "सुअर का ब्याना"] },
+            { q: "भैंस के ब्याने की प्रक्रिया को क्या कहते हैं?", o: ["A) किडिंग", "B) काविंग", "C) लैम्बिंग", "D) हैचिंग"], a: 1, exps: ["बकरी का ब्याना", "भैंस/गाय का ब्याना", "भेड़ का ब्याना", "मुर्गी का अंडे सेना"] },
+            { q: "बकरी के ब्याने की प्रक्रिया को क्या कहते हैं?", o: ["A) किडिंग", "B) लैम्बिंग", "C) काविंग", "D) फैरोइंग"], a: 0, exps: ["बकरी का ब्याना", "भेड़ का ब्याना", "गाय का ब्याना", "सुअर का ब्याना"] },
+            { q: "भेड़ के ब्याने की प्रक्रिया को क्या कहते हैं?", o: ["A) किडिंग", "B) लैम्बिंग", "C) काविंग", "D) फैरोइंग"], a: 1, exps: ["बकरी का ब्याना", "भेड़ का ब्याना", "गाय का ब्याना", "सुअर का ब्याना"] },
+            { q: "सुअर (Pig) के ब्याने की प्रक्रिया को क्या कहते हैं?", o: ["A) फैरोइंग", "B) किडिंग", "C) लैम्बिंग", "D) काविंग"], a: 0, exps: ["सुअर का ब्याना", "बकरी का ब्याना", "भेड़ का ब्याना", "गाय का ब्याना"] },
+            { q: "गाय के मांस (Meat) को क्या कहा जाता है?", o: ["A) मटन", "B) बीफ", "C) पोर्क", "D) शेवॉन"], a: 1, exps: ["भेड़ का मांस", "गाय का मांस", "सुअर का मांस", "बकरी का मांस"] },
+            { q: "भैंस के मांस को क्या कहा जाता है?", o: ["A) बीफ", "B) बफेन", "C) मटन", "D) पोर्क"], a: 1, exps: ["गाय का मांस", "भैंस का मांस", "भेड़ का मांस", "सुअर का मांस"] },
+            { q: "भेड़ (Sheep) के मांस को क्या कहा जाता है?", o: ["A) मटन", "B) बीफ", "C) शेवॉन", "D) पोर्क"], a: 0, exps: ["भेड़ का मांस", "गाय का मांस", "बकरी का मांस", "सुअर का मांस"] },
+            { q: "बकरी (Goat) के मांस को क्या कहा जाता है?", o: ["A) मटन", "B) शेवॉन", "C) बीफ", "D) पोर्क"], a: 1, exps: ["भेड़ का मांस", "बकरी का मांस", "गाय का मांस", "सुअर का मांस"] },
+            { q: "सुअर (Pig) के मांस को क्या कहा जाता है?", o: ["A) पोर्क", "B) मटन", "C) शेवॉन", "D) बीफ"], a: 0, exps: ["सुअर का मांस", "भेड़ का मांस", "बकरी का मांस", "गाय का मांस"] },
+            { q: "गाय के नवजात बच्चे को क्या कहा जाता है?", o: ["A) किड", "B) काफ़", "C) मेमना", "D) पिगलेट"], a: 1, exps: ["बकरी का बच्चा", "गाय/भैंस का बच्चा", "भेड़ का बच्चा", "सुअर का बच्चा"] },
+            { q: "भेड़ के बच्चे को क्या कहा जाता है?", o: ["A) किड", "B) काफ़", "C) मेमना", "D) पिल्ला"], a: 2, exps: ["बकरी का बच्चा", "गाय का बच्चा", "भेड़ का बच्चा", "कुत्ते का बच्चा"] },
+            { q: "बकरी के बच्चे को क्या कहा जाता है?", o: ["A) किड", "B) काफ़", "C) मेमना", "D) पिगलेट"], a: 0, exps: ["बकरी का बच्चा", "गाय का बच्चा", "भेड़ का बच्चा", "सुअर का बच्चा"] },
+            { q: "गाय/भैंस के समूह (Group) को क्या कहा जाता है?", o: ["A) फ्लॉक", "B) हर्ड", "C) ड्रोव", "D) पैक"], a: 1, exps: ["भेड़/बकरी/मुर्गी का समूह", "गाय/भैंस का समूह", "सुअर का समूह", "कुत्तों का समूह"] },
+            { q: "भेड़/बकरी के समूह को क्या कहा जाता है?", o: ["A) हर्ड", "B) फ्लॉक", "C) ड्रोव", "D) स्वाम"], a: 1, exps: ["गाय का समूह", "भेड़/बकरी का समूह", "सुअर का समूह", "मधुमक्खी का समूह"] },
+            { q: "बधिया किए गए (Castrated) नर गोवंश को क्या कहते हैं?", o: ["A) बुल", "B) बुलक / स्टीयर", "C) वीडर", "D) बैरो"], a: 1, exps: ["साबुत नर (सांड)", "बधिया नर गोवंश", "बधिया भेड़", "बधिया सुअर"] },
+            { q: "बधिया किए गए नर भेड़ को क्या कहते हैं?", o: ["A) बुलक", "B) वीडर", "C) बैरो", "D) कैपोन"], a: 1, exps: ["बधिया गाय", "बधिया भेड़", "बधिया सुअर", "बधिया मुर्गा"] },
+            { q: "बधिया किए गए नर सुअर को क्या कहते हैं?", o: ["A) बैरो", "B) कैपोन", "C) वीडर", "D) बुलक"], a: 0, exps: ["बधिया सुअर", "बधिया मुर्गा", "बधिया भेड़", "बधिया गाय"] },
+            { q: "बधिया किए गए नर मुर्गे को क्या कहते हैं?", o: ["A) कैपोन", "B) बैरो", "C) वीडर", "D) स्टीयर"], a: 0, exps: ["बधिया मुर्गा", "बधिया सुअर", "बधिया भेड़", "बधिया गोवंश"] },
+            { q: "भारत की सबसे अच्छी दुधारू गाय की नस्ल कौन सी है?", o: ["A) हरियाणा", "B) साहीवाल", "C) थारपारकर", "D) नागोरी"], a: 1, exps: ["द्विकाजी नस्ल", "सर्वोत्तम दुधारू नस्ल", "द्विकाजी (रेगिस्तानी)", "भारवाही (बोझा ढोने वाली)"] },
+            { q: "साहीवाल गाय का मूल स्थान कहाँ है?", o: ["A) रोहतक (हरियाणा)", "B) मोंटगोमरी (पाकिस्तान)", "C) गिर वन (गुजरात)", "D) सिंध (पाकिस्तान)"], a: 1, exps: ["हरियाणा गाय का स्थान", "साहीवाल का स्थान", "गिर गाय का स्थान", "रेड सिंधी का स्थान"] },
+            { q: "विश्व में सबसे अधिक दूध देने वाली गाय की नस्ल कौन सी है?", o: ["A) जर्सी", "B) होल्स्टीन फ्रीजियन", "C) ब्राउन स्विस", "D) ग्वेर्नसे"], a: 1, exps: ["सबसे ज्यादा फैट वाली", "सबसे ज्यादा दूध वाली", "द्विकाजी विदेशी नस्ल", "पीला दूध देने वाली"] },
+            { q: "होल्स्टीन फ्रीजियन (HF) का मूल स्थान कहाँ है?", o: ["A) जर्सी द्वीप", "B) हॉलैंड", "C) स्विट्जरलैंड", "D) डेनमार्क"], a: 1, exps: ["जर्सी गाय का स्थान", "HF गाय का स्थान", "ब्राउन स्विस का स्थान", "रेड डेन का स्थान"] },
+            { q: "विदेशी गायों में सबसे अधिक वसा (Fat %) किस नस्ल के दूध में होती है?", o: ["A) जर्सी", "B) होल्स्टीन फ्रीजियन", "C) आयरशायर", "D) ब्राउन स्विस"], a: 0, exps: ["लगभग 5-5.5% फैट", "सबसे कम फैट (3-3.5%)", "स्कॉटलैंड की नस्ल", "पनीर के लिए उत्तम"] },
+            { q: "भारत में सबसे अधिक दूध देने वाली भैंस की नस्ल कौन सी है?", o: ["A) जाफराबादी", "B) मुर्रा", "C) नीली-रावी", "D) भदावरी"], a: 1, exps: ["सबसे भारी भैंस", "सबसे दुधारू भैंस", "सफेद आँखों वाली", "सबसे अधिक फैट वाली"] },
+            { q: "मुर्रा भैंस का मूल स्थान कहाँ है?", o: ["A) गुजरात", "B) रोहतक (हरियाणा)", "C) आगरा (यूपी)", "D) पंजाब"], a: 1, exps: ["सुरती/जाफराबादी का स्थान", "मुर्रा का मूल स्थान", "भदावरी का स्थान", "नीली-रावी का स्थान"] },
+            { q: "'जलेबी के आकार' के सींग किस भैंस की पहचान है?", o: ["A) जाफराबादी", "B) सुरती", "C) मुर्रा", "D) भदावरी"], a: 2, exps: ["नीचे लटके चौड़े सींग", "हंसिया (दरांती) आकार के सींग", "जलेबी आकार (मुड़े हुए) सींग", "तांबे जैसा रंग"] },
+            { q: "'हंसिया (दरांती) के आकार' के सींग किस भैंस की पहचान है?", o: ["A) सुरती", "B) मुर्रा", "C) जाफराबादी", "D) नीली रावी"], a: 0, exps: ["हंसिया आकार", "जलेबी आकार", "भारी-भरकम सींग", "सफ़ेद पैर/आँखें"] },
+            { q: "सबसे अधिक वसा (Fat 13-14%) किस भैंस के दूध में पाई जाती है?", o: ["A) मुर्रा", "B) भदावरी", "C) सुरती", "D) मेहसाणा"], a: 1, exp: ["7% फैट", "13-14% फैट", "हंसिया सींग", "मुर्रा व सुरती का क्रॉस"] }, // Note: exp fallback handles gracefully, exps is better.
+            { q: "तांबे जैसा रंग किस भैंस की विशेषता है?", o: ["A) नीली रावी", "B) जाफराबादी", "C) भदावरी", "D) मुर्रा"], a: 2, exps: ["सफ़ेद धब्बे", "भारी शरीर", "तांबे (Copper) जैसा रंग", "जेट ब्लैक रंग"] },
+            { q: "बकरियों की 'मिल्क क्वीन' किसे कहा जाता है?", o: ["A) सानेन", "B) जमुनापारी", "C) बारबरी", "D) टोगनबर्ग"], a: 0, exps: ["स्विट्जरलैंड की दुधारू नस्ल", "भारत की सबसे बड़ी नस्ल", "शहरों के लिए उत्तम", "सींग रहित नस्ल"] },
+            { q: "भारत में सबसे बड़ी और सबसे ज़्यादा दूध देने वाली बकरी की नस्ल कौन सी है?", o: ["A) बीटल", "B) बारबरी", "C) जमुनापारी", "D) सिरोही"], a: 2, exps: ["पंजाब की नस्ल", "छोटे आकार की", "सबसे बड़ी (तोता मुखी)", "राजस्थान की नस्ल"] },
+            { q: "कौन सी बकरी शहर में बांधकर पालने के लिए सबसे उपयुक्त है?", o: ["A) बारबरी", "B) जमुनापारी", "C) पश्मीना", "D) अंगोरा"], a: 0, exps: ["स्टाल फीडिंग (Stall feeding) हेतु", "चराने हेतु उपयुक्त", "ऊन (पश्मीना) हेतु", "मोहेयर (Mohair) हेतु"] },
+            { q: "विश्व की सबसे अच्छी महीन ऊन वाली भेड़ की नस्ल कौन सी है?", o: ["A) बीकानेरी", "B) मेरीनो", "C) कोरिडेल", "D) लिंकन"], a: 1, exps: ["कालीन ऊन हेतु", "सबसे महीन ऊन", "द्विकाजी नस्ल", "लंबे रेशे वाली ऊन"] },
+            { q: "मेरीनो भेड़ का मूल स्थान कहाँ है?", o: ["A) ऑस्ट्रेलिया", "B) स्पेन", "C) भारत", "D) यूके"], a: 1, exps: ["कोरिडेल का स्थान", "मेरीनो का स्थान", "चोकला का स्थान", "साउथडाउन का स्थान"] },
+            { q: "भारत की कौन सी भेड़ की नस्ल 'भारत की मेरीनो' कहलाती है?", o: ["A) नेल्लोर", "B) चोकला", "C) मारवाड़ी", "D) गद्दी"], a: 1, exps: ["मांस हेतु", "भारत की मेरीनो", "बीमारी रोधी नस्ल", "पहाड़ी नस्ल"] },
+            { q: "विश्व में सबसे अधिक अंडे देने वाली मुर्गी की नस्ल कौन सी है?", o: ["A) रोड आइलैंड रेड (RIR)", "B) वाइट लेगहॉर्न", "C) असील", "D) कड़कनाथ"], a: 1, exps: ["द्विकाजी मुर्ग़ी", "अंडा उत्पादन हेतु (लेयर)", "लड़ाकू मुर्ग़ी", "काले मांस वाली"] },
+            { q: "लड़ाई (मनोरंजन) के लिए मुर्गी की कौन सी भारतीय नस्ल मशहूर है?", o: ["A) असील", "B) कड़कनाथ", "C) घागस", "D) वाइट लेगहॉर्न"], a: 0, exps: ["लड़ाकू नस्ल", "काले मांस वाली", "देसी नस्ल", "अंडे वाली"] },
+            { q: "किस भारतीय मुर्गी का मांस और खून काले रंग का होता है?", o: ["A) असील", "B) कड़कनाथ", "C) ब्रह्मा", "D) कोचीन"], a: 1, exps: ["लड़ाकू नस्ल", "काले रंग की (औषधीय गुण)", "एशियाई भारी नस्ल", "चीन की भारी नस्ल"] },
+            { q: "मुर्गियों की मांस के लिए पाली जाने वाली नस्लों को क्या कहते हैं?", o: ["A) लेयर", "B) ब्रायलर", "C) ग्रोवर", "D) पुलेट"], a: 1, exps: ["अंडे देने वाली", "मांस देने वाली", "8-20 हफ़्ते की मुर्ग़ी", "जवान मुर्ग़ी"] },
+            { q: "अंडे देने वाली मुर्गियों को क्या कहा जाता है?", o: ["A) ब्रायलर", "B) लेयर", "C) ग्रोवर", "D) कॉकरेल"], a: 1, exps: ["मांस के लिए", "अंडे के लिए", "बढ़ती उम्र की मुर्ग़ी", "जवान मुर्गा"] }
+        ];
 
-        // Automatic generation loop to scale precisely to 50 items following counter standard
-        function fillTo50() {
-            ['en', 'hi'].forEach(l => {
-                const base = [...quizData[l]];
-                while(quizData[l].length < 50) {
-                    const temp = base[quizData[l].length % base.length];
-                    quizData[l].push({...temp});
-                }
-            });
-        }
-        fillTo50();
+        // TEST 2: Nutrition, Breeding, Housing, Management (50 Questions)
+        const test2Data = [
+            { q: "गाय का सामान्य गर्भकाल कितने दिन का होता है?", o: ["A) 150 दिन", "B) 280-285 दिन", "C) 310 दिन", "D) 340 दिन"], a: 1, exps: ["बकरी का गर्भकाल", "गाय का गर्भकाल", "भैंस का गर्भकाल", "घोड़ी का गर्भकाल"] },
+            { q: "भैंस का सामान्य गर्भकाल कितने दिन का होता है?", o: ["A) 280 दिन", "B) 310 दिन", "C) 340 दिन", "D) 390 दिन"], a: 1, exps: ["गाय का", "भैंस का", "घोड़ी का", "गधी का"] },
+            { q: "बकरी (Goat) का सामान्य गर्भकाल कितने दिन का होता है?", o: ["A) 114 दिन", "B) 145-150 दिन", "C) 280 दिन", "D) 310 दिन"], a: 1, exps: ["सुअर का गर्भकाल", "बकरी/भेड़ का गर्भकाल", "गाय का", "भैंस का"] },
+            { q: "भेड़ (Sheep) का सामान्य गर्भकाल कितने दिन का होता है?", o: ["A) 114 दिन", "B) 145-150 दिन", "C) 280 दिन", "D) 310 दिन"], a: 1, exps: ["सुअर", "भेड़/बकरी", "गाय", "भैंस"] },
+            { q: "सुअर (Pig) का सामान्य गर्भकाल कितना होता है?", o: ["A) 114 दिन", "B) 145 दिन", "C) 150 दिन", "D) 280 दिन"], a: 0, exps: ["सुअर (3 माह, 3 सप्ताह, 3 दिन)", "भेड़", "बकरी", "गाय"] },
+            { q: "मुर्गी के अंडे सेने (Incubation) का समय कितने दिन का होता है?", o: ["A) 15 दिन", "B) 21 दिन", "C) 28 दिन", "D) 30 दिन"], a: 1, exps: ["कबूतर का समय", "मुर्गी का समय", "बतख/टर्की का समय", "हंस का समय"] },
+            { q: "गाय में मदचक्र (Estrus cycle) की अवधि कितने दिन की होती है?", o: ["A) 16 दिन", "B) 21 दिन", "C) 28 दिन", "D) 30 दिन"], a: 1, exps: ["भेड़ का मदचक्र", "गाय/भैंस/बकरी/सुअर का", "मनुष्य का", "कोई नहीं"] },
+            { q: "गाय के मदकाल (Heat period) की अवधि कितनी होती है?", o: ["A) 12-24 घंटे", "B) 2-3 दिन", "C) 5 दिन", "D) 1 सप्ताह"], a: 0, exps: ["गाय की हीट अवधि", "सुअर की हीट अवधि", "घोड़ी की हीट अवधि", "कुतिया की हीट अवधि"] },
+            { q: "भैंस के मदकाल की अवधि कितनी होती है?", o: ["A) 12-24 घंटे", "B) 24-36 घंटे", "C) 3-4 दिन", "D) 10 घंटे"], a: 1, exps: ["गाय की अवधि", "भैंस की अवधि", "सुअर की अवधि", "कोई नहीं"] },
+            { q: "बकरी में मदचक्र कितने दिन का होता है?", o: ["A) 16-17 दिन", "B) 19-21 दिन", "C) 28 दिन", "D) 30 दिन"], a: 1, exps: ["भेड़ का मदचक्र", "बकरी का मदचक्र", "गाय का", "कोई नहीं"] },
+            { q: "कृत्रिम गर्भाधान के लिए वीर्य (Semen) को किसमें संरक्षित किया जाता है?", o: ["A) तरल ऑक्सीजन", "B) तरल नाइट्रोजन", "C) तरल अमोनिया", "D) बर्फ"], a: 1, exps: ["गैस के रूप में", "वीर्य संरक्षण हेतु (-196°C)", "उर्वरक हेतु", "अस्थायी संरक्षण"] },
+            { q: "तरल नाइट्रोजन का तापमान कितना होता है?", o: ["A) 0°C", "B) -40°C", "C) -196°C", "D) -273°C"], a: 2, exps: ["पानी जमता है", "बर्फ", "तरल नाइट्रोजन", "परम शून्य ताप"] },
+            { q: "वीर्य को पतला करने के लिए मुख्य रूप से किसका उपयोग किया जाता है?", o: ["A) पानी", "B) एग योक साइट्रेट", "C) दूध", "D) चीनी का घोल"], a: 1, exps: ["वीर्य नष्ट कर देगा", "शुक्राणुओं का पोषण", "सामान्य पोषण", "ऊर्जा हेतु"] },
+            { q: "गाय/भैंस में कृत्रिम गर्भाधान की सबसे उत्तम विधि कौन सी है?", o: ["A) रेक्टो-वेजाइनल विधि", "B) वेजाइनल विधि", "C) स्पेकुलम विधि", "D) इनमें से कोई नहीं"], a: 0, exps: ["सबसे सुरक्षित और सफल विधि", "पुरानी विधि", "भेड़/बकरी में उपयोग", "अन्य"] },
+            { q: "नवजात बछड़े को जन्म के तुरंत बाद क्या पिलाना चाहिए?", o: ["A) पानी", "B) खीस (Colostrum)", "C) सामान्य दूध", "D) ग्लूकोज"], a: 1, exps: ["प्यास हेतु", "रोग प्रतिरोधक क्षमता हेतु", "पोषण हेतु", "ऊर्जा हेतु"] },
+            { q: "खीस पिलाने का मुख्य कारण क्या है?", o: ["A) भूख मिटाना", "B) रोग प्रतिरोधक क्षमता बढ़ाना", "C) प्यास बुझाना", "D) वजन बढ़ाना"], a: 1, exps: ["दूध का काम", "एंटीबॉडीज देना", "पानी का काम", "दाने का काम"] },
+            { q: "नवजात बछड़े को उसके शरीर के भार का कितना प्रतिशत खीस पिलाना चाहिए?", o: ["A) 1%", "B) 5%", "C) 10%", "D) 20%"], a: 2, exps: ["बहुत कम", "कम मात्रा", "सही मात्रा (1/10 भाग)", "अत्यधिक मात्रा"] },
+            { q: "बछड़े को उसकी माँ से अलग करके पालने की विधि को क्या कहते हैं?", o: ["A) वीनिंग (Weaning)", "B) सकलिंग (Suckling)", "C) काविंग", "D) कलिंग"], a: 0, exps: ["अलग पालना (डेयरी फार्म)", "माँ के साथ पालना", "जन्म देना", "छंटनी करना"] },
+            { q: "बछड़े को माँ के साथ रखकर पालने की विधि को क्या कहते हैं?", o: ["A) वीनिंग", "B) सकलिंग (Suckling)", "C) फोस्टरिंग", "D) डॉकिंग"], a: 1, exps: ["अलग पालना", "माँ के साथ पालना", "दूसरी माँ का दूध", "पूंछ काटना"] },
+            { q: "पशु के सींग हटाने के लिए किस रसायन का उपयोग किया जाता है?", o: ["A) कास्टिक पोटाश या कास्टिक सोडा", "B) सल्फ्यूरिक एसिड", "C) कॉपर सल्फेट", "D) सोडियम क्लोराइड"], a: 0, exps: ["रसायनिक सींग रोधन", "खतरनाक अम्ल", "फुट-बाथ हेतु", "नमक"] },
+            { q: "बछड़ों में सींग हटाने की सही उम्र क्या है?", o: ["A) 1-2 दिन", "B) 7-15 दिन", "C) 1 महीना", "D) 6 महीने"], a: 1, exps: ["बहुत कम उम्र", "सींग की कलियां नर्म होती हैं", "सींग कठोर होने लगते हैं", "सींग बड़े हो जाते हैं"] },
+            { q: "भेड़ों में पूंछ काटने की प्रक्रिया को क्या कहते हैं?", o: ["A) डीबीकिंग", "B) डॉकिंग", "C) वीनिंग", "D) शीयरिंग"], a: 1, exps: ["चोंच काटना", "पूंछ काटना", "अलग पालना", "ऊन उतारना"] },
+            { q: "मुर्गियों में चोंच काटने की प्रक्रिया को क्या कहते हैं?", o: ["A) डॉकिंग", "B) डीबीकिंग", "C) कलिंग", "D) डबिंग"], a: 1, exps: ["पूंछ काटना", "चोंच काटना", "छंटनी करना", "कलंगी काटना"] },
+            { q: "झुंड से बीमार या अनुत्पादक पशुओं को बाहर निकालने की प्रक्रिया क्या कहलाती है?", o: ["A) सिलेक्शन", "B) कलिंग", "C) वीनिंग", "D) डॉकिंग"], a: 1, exps: ["अच्छे पशु छांटना", "खराब पशु बाहर निकालना", "बछड़ा अलग करना", "पूंछ काटना"] },
+            { q: "पशुओं के आवास की 'टेल टू टेल' प्रणाली का सबसे बड़ा लाभ क्या है?", o: ["A) चारा देने में आसानी", "B) बीमारियाँ कम फैलती हैं", "C) पशुओं को देखना आसान है", "D) कम जगह लगती है"], a: 1, exps: ["हेड टू हेड का लाभ", "पशु एक दूसरे के मुंह से दूर रहते हैं", "हेड टू हेड का लाभ", "गलत तथ्य"] },
+            { q: "पशु आवास की 'हेड टू हेड' प्रणाली का मुख्य लाभ क्या है?", o: ["A) चारा डालने में आसानी", "B) दूध दूहने में आसानी", "C) बीमारियां कम फैलना", "D) साफ-सफाई में आसानी"], a: 0, exps: ["बीच की नाली से चारा डालना", "टेल टू टेल का लाभ", "टेल टू टेल का लाभ", "टेल टू टेल का लाभ"] },
+            { q: "गाय को बांधकर रखने के लिए प्रति गाय कितनी ढकी हुई जगह की आवश्यकता होती है?", o: ["A) 20-30 sq.ft", "B) 40-50 sq.ft", "C) 70-80 sq.ft", "D) 100 sq.ft"], a: 0, exps: ["गाय के लिए सही", "अतिरिक्त जगह", "खुली जगह की माप", "भैंस की खुली जगह"] },
+            { q: "खुले आवास प्रणाली में एक गाय के लिए कितनी खुली जगह चाहिए?", o: ["A) 20 sq.ft", "B) 40 sq.ft", "C) 70 sq.ft", "D) 100 sq.ft"], a: 2, exps: ["बछड़े की जगह", "बंद जगह", "गाय के लिए खुली जगह", "भैंस के लिए खुली जगह"] },
+            { q: "भैंस को खुले आवास प्रणाली में प्रति भैंस कितनी खुली जगह चाहिए?", o: ["A) 50 sq.ft", "B) 70 sq.ft", "C) 90 sq.ft", "D) 120 sq.ft"], a: 2, exps: ["बंद जगह", "गाय की खुली जगह", "भैंस की खुली जगह", "सांड की खुली जगह"] },
+            { q: "चारे (Roughage) में क्रूड फाइबर की मात्रा कितनी होती है?", o: ["A) 18% से कम", "B) 18% से अधिक", "C) 5% से कम", "D) शून्य"], a: 1, exps: ["दाने में होती है", "चारे में फाइबर अधिक होता है", "दाने में", "गलत तथ्य"] },
+            { q: "दाने (Concentrate) में क्रूड फाइबर की मात्रा कितनी होती है?", o: ["A) 18% से अधिक", "B) 18% से कम", "C) 60% से अधिक", "D) 80% से अधिक"], a: 1, exps: ["चारे में", "दाने में फाइबर कम होता है", "चारे में", "चारे में"] },
+            { q: "चारे में TDN (कुल पचने योग्य पोषक तत्व) की मात्रा कितनी होती है?", o: ["A) 60% से कम", "B) 60% से अधिक", "C) 80% से अधिक", "D) 90% से अधिक"], a: 0, exps: ["चारे में ऊर्जा कम होती है", "दाने में ऊर्जा अधिक होती है", "दाने में", "अतिरिक्त ऊर्जा"] },
+            { q: "पशु को केवल जीवित रहने और शरीर का वजन बनाए रखने के लिए दिया जाने वाला आहार क्या कहलाता है?", o: ["A) उत्पादन आहार", "B) निर्वाह आहार", "C) संतुलित आहार", "D) आदर्श आहार"], a: 1, exps: ["दूध/मांस के लिए", "शरीर चलाने के लिए", "सभी तत्वों वाला", "किताबी आहार"] },
+            { q: "पशु को दूध, मांस या ऊन उत्पादन के लिए दिया जाने वाला अतिरिक्त आहार क्या कहलाता है?", o: ["A) निर्वाह आहार", "B) उत्पादन आहार", "C) जीवन आहार", "D) कोई नहीं"], a: 1, exps: ["जीने के लिए", "उत्पादन के लिए", "निर्वाह आहार", "अन्य"] },
+            { q: "गाय को प्रति कितने लीटर दूध उत्पादन पर 1 किलो अतिरिक्त दाना दिया जाता है?", o: ["A) 1 लीटर", "B) 2 लीटर", "C) 3 लीटर", "D) 5 लीटर"], a: 2, exps: ["बहुत अधिक दाना", "भैंस के लिए", "गाय के लिए", "कम दाना"] },
+            { q: "भैंस को प्रति कितने लीटर दूध उत्पादन पर 1 किलो अतिरिक्त दाना दिया जाता है?", o: ["A) 1 लीटर", "B) 2.5 लीटर", "C) 3 लीटर", "D) 4 लीटर"], a: 1, exps: ["गलत मात्रा", "भैंस के लिए", "गाय के लिए", "गलत मात्रा"] },
+            { q: "प्रति 100 किलो शरीर भार पर गाय को कितना सूखा पदार्थ (Dry Matter) चाहिए?", o: ["A) 1.5 किलो", "B) 2.5 किलो", "C) 3.0 किलो", "D) 4.5 किलो"], a: 1, exps: ["कम मात्रा", "गाय के लिए", "भैंस के लिए", "अत्यधिक मात्रा"] },
+            { q: "प्रति 100 किलो शरीर भार पर भैंस को कितना सूखा पदार्थ चाहिए?", o: ["A) 2.0 किलो", "B) 2.5 किलो", "C) 3.0 किलो", "D) 4.0 किलो"], a: 2, exps: ["गलत मात्रा", "गाय के लिए", "भैंस के लिए", "अत्यधिक मात्रा"] },
+            { q: "साइलेज में नमी की मात्रा कितनी होती है?", o: ["A) 10-15%", "B) 20-30%", "C) 60-70%", "D) 80-90%"], a: 2, exps: ["हे (Hay) की नमी", "गलत मात्रा", "रसीला चारा (Silage)", "हरे चारे की नमी"] },
+            { q: "हे (Hay) में नमी की मात्रा कितनी होनी चाहिए?", o: ["A) 15-20% से कम", "B) 40-50%", "C) 60-70%", "D) 80%"], a: 0, exps: ["सूखा चारा (Hay)", "गलत मात्रा", "साइलेज की नमी", "हरे चारे की नमी"] },
+            { q: "सबसे अच्छी साइलेज किस फसल से बनती है?", o: ["A) बरसीम", "B) लूसर्न", "C) मक्का", "D) जई"], a: 2, exps: ["हे (Hay) हेतु", "हे (Hay) हेतु", "कार्बोहाइड्रेट युक्त (Silage)", "हे हेतु"] },
+            { q: "सबसे अच्छी हे (Hay) किस फसल से बनती है?", o: ["A) मक्का", "B) ज्वार", "C) बरसीम / लूसर्न", "D) बाजरा"], a: 2, exps: ["साइलेज हेतु", "साइलेज हेतु", "प्रोटीन युक्त (Hay)", "अन्य"] },
+            { q: "अच्छी साइलेज का pH मान कितना होना चाहिए?", o: ["A) 3.5 - 4.2", "B) 5.0 - 6.0", "C) 6.5 - 7.0", "D) 7.5 - 8.0"], a: 0, exps: ["उत्तम साइलेज", "खराब साइलेज", "उदासीन", "क्षारीय"] },
+            { q: "पशु की आयु ज्ञात करने का सबसे सटीक तरीका कौन सा है?", o: ["A) खुर देखकर", "B) सींग के छल्ले देखकर", "C) दांत देखकर", "D) शारीरिक आकार देखकर"], a: 2, exps: ["अंदाजा लगता है", "उम्र = छल्ले + 2", "सबसे वैज्ञानिक तरीका", "गलत तरीका"] },
+            { q: "सींग पर पहला छल्ला किस उम्र में बनता है?", o: ["A) 1 वर्ष", "B) 2 वर्ष", "C) 3 वर्ष", "D) 5 वर्ष"], a: 2, exps: ["गलत उम्र", "गलत उम्र", "पहला छल्ला", "गलत उम्र"] },
+            { q: "वयस्क गाय के दांतों का सूत्र क्या है?", o: ["A) 0033/4033", "B) 2033/2033", "C) 0033/0033", "D) 2133/2133"], a: 0, exps: ["गाय का दंत सूत्र", "मनुष्य/अन्य", "गलत सूत्र", "कुत्ते का सूत्र"] },
+            { q: "रोमंथी पशुओं (Ruminants) के पेट में कितने भाग होते हैं?", o: ["A) 1", "B) 2", "C) 3", "D) 4"], a: 3, exps: ["कुत्ता/बिल्ली", "पक्षी", "ऊँट (छद्म रोमंथी)", "गाय/भैंस/बकरी"] },
+            { q: "रोमंथी पशुओं के पेट का सबसे बड़ा भाग कौन सा है?", o: ["A) रूमेन", "B) रेटिकुलम", "C) ओमेसम", "D) एबोमेसम"], a: 0, exps: ["भोजन का भंडारण (80%)", "छत्ते जैसी संरचना", "पानी सोखना", "सत्य अमाशय"] },
+            { q: "रोमंथी पशुओं का 'सत्य अमाशय' (True stomach) किसे कहा जाता है?", o: ["A) रूमेन", "B) रेटिकुलम", "C) ओमेसम", "D) एबोमेसम"], a: 3, exps: ["भंडारण कक्ष", "हार्डवेयर स्टमक", "पानी अवशोषण", "पाचक रस यहीं निकलते हैं"] },
+            { q: "मुर्गियों में भोजन पीसने का काम कौन सा अंग करता है?", o: ["A) क्रॉप", "B) गिज़र्ड", "C) प्रोवेंट्रिकुलस", "D) सीका"], a: 1, exps: ["भोजन इकट्ठा करना", "चक्की का काम (Grinding)", "सत्य अमाशय (पाचन)", "अंधनाल"] }
+        ];
 
-        let currentLang = 'en';
+        // TEST 3: Diseases, Poultry specific, Milk & Dairy Science (50 Questions)
+        const test3Data = [
+            { q: "पशुओं में खुरपका-मुंहपका (FMD) रोग किसके कारण होता है?", o: ["A) जीवाणु", "B) विषाणु", "C) कवक", "D) प्रोटोजोआ"], a: 1, exps: ["एंथ्रेक्स का कारण", "पिकोर्ना वायरस (छूत की बीमारी)", "दाद का कारण", "टिक्स का कारण"] },
+            { q: "पशुओं में एंथ्रेक्स रोग किसके कारण होता है?", o: ["A) बैसिलस एंथ्रेसिस", "B) वायरस", "C) कवक", "D) परजीवी"], a: 0, exps: ["जीवाणु जनित रोग", "FMD का कारण", "दाद का कारण", "कीड़े"] },
+            { q: "कौन सा रोग पशुओं से मनुष्यों में फैल सकता है (Zoonotic)?", o: ["A) खुरपका-मुंहपका", "B) एंथ्रेक्स", "C) ब्लैक क्वार्टर", "D) थनैला"], a: 1, exps: ["पशुओं तक सीमित", "जूनोटिक बीमारी", "पशुओं तक सीमित", "अयन का रोग"] },
+            { q: "गलाघोंटू (HS) रोग किसके कारण होता है?", o: ["A) पाश्चुरेला मल्टोसिडा", "B) वायरस", "C) प्रोटोजोआ", "D) कवक"], a: 0, exps: ["जीवाणु जनित", "FMD का कारण", "खूनी पेचिश", "दाद"] },
+            { q: "लंगड़ी बुखार (BQ) रोग किसके कारण होता है?", o: ["A) क्लोस्ट्रीडियम चौवोयाई", "B) वायरस", "C) प्रोटोजोआ", "D) फफूंद"], a: 0, exps: ["जीवाणु जनित (गैस बनना)", "FMD", "टिक फीवर", "दाद"] },
+            { q: "पशु के अयन/थन की सूजन को कौन सा रोग कहते हैं?", o: ["A) खुरपका-मुंहपका", "B) थनैला", "C) एंथ्रेक्स", "D) निमोनिया"], a: 1, exps: ["खुर/मुंह का रोग", "अयन का रोग (Mastitis)", "तिल्ली रोग", "फेफड़े का रोग"] },
+            { q: "मिल्क फीवर रोग पशुओं में किसकी कमी से होता है?", o: ["A) फास्फोरस", "B) कैल्शियम", "C) आयरन", "D) विटामिन ए"], a: 1, exps: ["पिका रोग का कारण", "कैल्शियम की कमी से", "एनीमिया", "रतौंधी"] },
+            { q: "मिल्क फीवर के दौरान पशु का शरीर का तापमान कैसा रहता है?", o: ["A) बहुत बढ़ जाता है", "B) सामान्य से कम हो जाता है", "C) कोई बदलाव नहीं होता", "D) उतार-चढ़ाव होता है"], a: 1, exps: ["अन्य बुखारों में", "शरीर ठंडा पड़ जाता है", "गलत", "गलत"] },
+            { q: "मुर्गियों में 'रानीखेत' रोग किसके कारण होता है?", o: ["A) जीवाणु", "B) पैरामाइक्सो वायरस", "C) कवक", "D) विटामिन की कमी"], a: 1, exps: ["हैजा का कारण", "रानीखेत (न्यूकैसल रोग)", "दाद", "कमजोरी"] },
+            { q: "मुर्गियों में 'मैरेक्स रोग' किसके कारण होता है?", o: ["A) हर्पीज वायरस", "B) जीवाणु", "C) फफूंद", "D) प्रोटोजोआ"], a: 0, exps: ["ट्यूमर वाला रोग", "कॉलरा", "एस्परजिलोसिस", "कॉक्सीडायोसिस"] },
+            { q: "मुर्गियों में कॉक्सिडिओसिस (खूनी पेचिश) रोग किसके कारण होता है?", o: ["A) वायरस", "B) प्रोटोजोआ", "C) जीवाणु", "D) नेमाटोड"], a: 1, exps: ["रानीखेत", "आइमेरिया प्रोटोजोआ", "हैजा", "कृमि"] },
+            { q: "मुर्गियों में 'फाउल पॉक्स' (चेचक) बीमारी का कारण क्या है?", o: ["A) बोरेलिओटा एवियम", "B) जीवाणु", "C) प्रोटोजोआ", "D) फफूंद"], a: 0, exps: ["विषाणु जनित", "हैजा", "खूनी पेचिश", "ब्रोडर निमोनिया"] },
+            { q: "गाय के दूध का पीला रंग किसके कारण होता है?", o: ["A) कैरोटीन", "B) केसिन", "C) लैक्टोज", "D) एल्ब्यूमिन"], a: 0, exps: ["पीलापन लाता है", "सफेद रंग", "मीठापन", "प्रोटीन"] },
+            { q: "भैंस के दूध का सफेद रंग किसके कारण होता है?", o: ["A) कैरोटीन", "B) केसिन", "C) लैक्टोज", "D) फैट"], a: 1, exps: ["पीलापन", "सफेद रंग (मुख्य प्रोटीन)", "मीठापन", "वसा"] },
+            { q: "दूध का मीठापन किस अवयव के कारण होता है?", o: ["A) फैट", "B) लैक्टोज", "C) प्रोटीन", "D) खनिज"], a: 1, exps: ["वसा", "दुग्ध शर्करा", "केसिन", "राख"] },
+            { q: "दूध उतारने के लिए कौन सा हार्मोन जिम्मेदार है?", o: ["A) प्रोलैक्टिन", "B) ऑक्सीटोसिन", "C) एड्रेनालाईन", "D) थायरोक्सिन"], a: 1, exps: ["दूध निर्माण हेतु", "दूध उतारने (Letdown) हेतु", "दूध चढ़ाने हेतु", "वृद्धि हार्मोन"] },
+            { q: "डरने पर दूध चढ़ाने के लिए कौन सा हार्मोन जिम्मेदार है?", o: ["A) ऑक्सीटोसिन", "B) एड्रेनालाईन", "C) एस्ट्रोजन", "D) प्रोजेस्टेरोन"], a: 1, exps: ["दूध उतारना", "दूध रोकना (Holding up)", "प्रजनन हार्मोन", "प्रजनन हार्मोन"] },
+            { q: "ऑक्सीटोसिन हार्मोन का प्रभाव दूध दूहते समय कितनी देर तक रहता है?", o: ["A) 1-2 मिनट", "B) 5-7 मिनट", "C) 15 मिनट", "D) 30 मिनट"], a: 1, exps: ["बहुत कम", "सही समय", "बहुत अधिक", "अत्यधिक"] },
+            { q: "दूध दूहने की सबसे अच्छी विधि कौन सी है?", o: ["A) अंगूठा विधि", "B) चुटकी विधि", "C) पूर्ण हस्त दोहन विधि", "D) मशीन विधि"], a: 2, exps: ["दोषपूर्ण विधि", "छोटे थनों के लिए", "सबसे उत्तम विधि", "बड़े फार्म के लिए"] },
+            { q: "अंगूठा दबाकर दूध दूहने का क्या नुकसान है?", o: ["A) दूध ज्यादा निकलता है", "B) थनों की नसें खराब होती हैं", "C) दूध साफ आता है", "D) पशु को आराम मिलता है"], a: 1, exps: ["गलत", "थनैला रोग का खतरा", "गलत", "दर्द होता है"] },
+            { q: "दूध का आपेक्षिक घनत्व मापने के लिए किस यंत्र का उपयोग किया जाता है?", o: ["A) लैक्टोमीटर", "B) ब्यूटायरोमीटर", "C) थर्मामीटर", "D) हाइड्रोमीटर"], a: 0, exps: ["आपेक्षिक घनत्व हेतु", "वसा (Fat) हेतु", "तापमान हेतु", "पानी का घनत्व"] },
+            { q: "गाय के दूध का आपेक्षिक घनत्व सामान्यतः कितना होता है?", o: ["A) 1.025", "B) 1.028 से 1.030", "C) 1.032 से 1.034", "D) 1.040"], a: 1, exps: ["पतला दूध", "गाय का दूध", "भैंस का दूध", "सपरेटा दूध"] },
+            { q: "भैंस के दूध का आपेक्षिक घनत्व कितना होता है?", o: ["A) 1.028", "B) 1.030", "C) 1.032 से 1.034", "D) 1.040"], a: 2, exps: ["गाय का दूध", "गाय का दूध", "भैंस का दूध", "सपरेटा दूध"] },
+            { q: "दूध में वसा (Fat) प्रतिशत मापने के लिए किस यंत्र का उपयोग किया जाता है?", o: ["A) लैक्टोमीटर", "B) गरबर ब्यूटायरोमीटर", "C) पीपेट", "D) बैरोमीटर"], a: 1, exps: ["घनत्व हेतु", "फैट मापने हेतु", "मापने हेतु बर्तन", "हवा का दबाव"] },
+            { q: "गरबर विधि में फैट निकालने के लिए किस अम्ल का प्रयोग होता है?", o: ["A) नाइट्रिक एसिड", "B) सल्फ्यूरिक एसिड", "C) हाइड्रोक्लोरिक एसिड", "D) सिट्रिक एसिड"], a: 1, exps: ["अन्य अम्ल", "प्रोटीन को घोलने हेतु (H2SO4)", "अन्य अम्ल", "नींबू में"] },
+            { q: "दूध का pH मान सामान्यतः कितना होता है?", o: ["A) 4.5 से 5.0", "B) 6.5 से 6.7", "C) 7.0", "D) 7.5 से 8.0"], a: 1, exps: ["खट्टा दूध", "हल्का अम्लीय (ताजा दूध)", "उदासीन", "क्षारीय"] },
+            { q: "दूध का क्वथनांक (Boiling point) कितना होता है?", o: ["A) 100°C", "B) 100.15°C", "C) 95°C", "D) 105°C"], a: 1, exps: ["पानी का क्वथनांक", "दूध का क्वथनांक", "कम", "अधिक"] },
+            { q: "दूध का हिमांक (Freezing point) कितना होता है?", o: ["A) 0°C", "B) -0.54°C से -0.56°C", "C) -1.0°C", "D) -2.0°C"], a: 1, exps: ["पानी जमता है", "दूध जमता है", "अधिक ठंडा", "अधिक ठंडा"] },
+            { q: "टोन दूध (Toned Milk) में फैट और SNF का प्रतिशत कितना होना चाहिए?", o: ["A) 3.0% Fat, 8.5% SNF", "B) 1.5% Fat, 9.0% SNF", "C) 4.5% Fat, 8.5% SNF", "D) 6.0% Fat, 9.0% SNF"], a: 0, exps: ["टोन दूध", "डबल टोन दूध", "स्टैंडर्ड दूध", "पूर्ण दूध"] },
+            { q: "डबल टोन दूध में फैट और SNF का प्रतिशत कितना होता है?", o: ["A) 3.0% Fat, 8.5% SNF", "B) 1.5% Fat, 9.0% SNF", "C) 0.5% Fat, 8.7% SNF", "D) 4.5% Fat, 8.5% SNF"], a: 1, exps: ["टोन दूध", "डबल टोन दूध", "स्किम्ड दूध", "स्टैंडर्ड दूध"] },
+            { q: "दूध में पानी की मिलावट जांचने के लिए कौन सा यंत्र इस्तेमाल होता है?", o: ["A) लैक्टोमीटर", "B) थर्मामीटर", "C) ब्यूटायरोमीटर", "D) pH मीटर"], a: 0, exps: ["घनत्व मापता है", "तापमान", "फैट", "अम्लता"] },
+            { q: "दूध के पाश्चुरीकरण की 'HTST' विधि का तापमान और समय क्या है?", o: ["A) 63°C - 30 मिनट", "B) 72°C - 15 सेकंड", "C) 100°C - 5 सेकंड", "D) 130°C - 2 सेकंड"], a: 1, exps: ["LTLT विधि", "HTST विधि", "गलत", "UHT विधि"] },
+            { q: "दूध के पाश्चुरीकरण की 'LTLT' विधि का तापमान और समय क्या है?", o: ["A) 63°C - 30 मिनट", "B) 72°C - 15 सेकंड", "C) 100°C - 10 मिनट", "D) 80°C - 20 मिनट"], a: 0, exps: ["LTLT विधि", "HTST विधि", "गलत", "गलत"] },
+            { q: "अंडे की गुणवत्ता जांचने की सबसे अच्छी विधि कौन सी है?", o: ["A) वजन करना", "B) कैंडलिंग", "C) पानी में डुबोना", "D) उबालना"], a: 1, exps: ["गलत", "रौशनी से अंदर देखना", "पुरानी विधि", "गलत"] },
+            { q: "एक आदर्श मुर्गी के अंडे का औसत वजन कितना होता है?", o: ["A) 30-40 ग्राम", "B) 57-60 ग्राम", "C) 80-90 ग्राम", "D) 100 ग्राम"], a: 1, exps: ["छोटा अंडा", "आदर्श वजन", "बड़ा अंडा", "बहुत बड़ा"] },
+            { q: "मुर्गी के अंडे का कवच मुख्य रूप से किसका बना होता है?", o: ["A) कैल्शियम फास्फेट", "B) कैल्शियम कार्बोनेट", "C) सोडियम क्लोराइड", "D) प्रोटीन"], a: 1, exps: ["हड्डियों में", "कवच (CaCO3) का मुख्य तत्व", "नमक", "अंदर होता है"] },
+            { q: "मुर्गी के राशन में 'ग्रिट' (पत्थर के टुकड़े) क्यों मिलाए जाते हैं?", o: ["A) कैल्शियम देने के लिए", "B) गिज़र्ड में भोजन को पीसने में मदद के लिए", "C) प्यास बुझाने के लिए", "D) अंडे का रंग पीला करने के लिए"], a: 1, exps: ["मार्बल से", "चक्की का काम (Grinding)", "गलत", "गलत"] },
+            { q: "भेड़ों से ऊन उतारने की प्रक्रिया को क्या कहते हैं?", o: ["A) डॉकिंग", "B) शीयरिंग", "C) फ्लशिंग", "D) वीनिंग"], a: 1, exps: ["पूंछ काटना", "ऊन काटना", "अतिरिक्त दाना", "बच्चा अलग करना"] },
+            { q: "प्रजनन से 2-3 सप्ताह पहले भेड़ों को अतिरिक्त दाना देना क्या कहलाता है?", o: ["A) स्टीमिंग अप", "B) फ्लशिंग", "C) वीनिंग", "D) डॉकिंग"], a: 1, exps: ["ब्याने से पहले दाना", "प्रजनन से पहले दाना", "बच्चा अलग करना", "पूंछ काटना"] },
+            { q: "गर्भित गाय को ब्याने से 6-8 सप्ताह पहले जो अतिरिक्त दाना दिया जाता है, उसे क्या कहते हैं?", o: ["A) फ्लशिंग", "B) स्टीमिंग अप", "C) सकलिंग", "D) वीनिंग"], a: 1, exps: ["प्रजनन से पहले", "ब्याने से पहले (पोषण हेतु)", "दूध पिलाना", "बच्चा अलग करना"] },
+            { q: "पशु के शरीर पर से बाहरी परजीवियों को मारने के लिए दवा के घोल में नहलाना क्या कहलाता है?", o: ["A) शीयरिंग", "B) डिपिंग", "C) डॉकिंग", "D) डीहॉर्निंग"], a: 1, exps: ["ऊन काटना", "परजीवी मारना", "पूंछ काटना", "सींग काटना"] },
+            { q: "मुर्गियों के आवास की सबसे अच्छी और व्यावसायिक प्रणाली कौन सी है?", o: ["A) फ्री रेंज सिस्टम", "B) डीप लिटर सिस्टम", "C) फोल्ड सिस्टम", "D) सेमी-इंटेन्सिव सिस्टम"], a: 1, exp: ["खुले में", "बुरादे पर अंदर पालना", "खेतों में", "आधा खुला आधा बंद"] },
+            { q: "डीप लिटर प्रणाली में बिछावन की मोटाई सामान्यतः कितनी रखी जाती है?", o: ["A) 1-2 इंच", "B) 6-8 इंच", "C) 15-20 इंच", "D) 25 इंच"], a: 1, exps: ["बहुत कम", "आदर्श मोटाई", "बहुत अधिक", "गलत"] },
+            { q: "ब्रुडिंग (Brooding) क्या है?", o: ["A) मुर्गी का अंडे देना", "B) चूजों को कृत्रिम गर्मी और देखभाल देना", "C) मुर्गियों को मारना", "D) दाना खिलाना"], a: 1, exps: ["लेइंग", "शुरुआती 4-6 सप्ताह की देखभाल", "कलिंग", "फीडिंग"] },
+            { q: "गाय में कुल कितने पेट होते हैं?", o: ["A) 1", "B) 2", "C) 3", "D) 4"], a: 3, exps: ["कुत्ता/बिल्ली", "पक्षी", "ऊँट", "रोमंथी पशु"] },
+            { q: "ऊँट के पेट में कौन सा भाग अनुपस्थित होता है?", o: ["A) रूमेन", "B) रेटिकुलम", "C) ओमेसम", "D) एबोमेसम"], a: 2, exps: ["सबसे बड़ा भाग", "छत्ते जैसा भाग", "ऊँट में नहीं होता", "सत्य अमाशय"] },
+            { q: "मधुमक्खी पालन को क्या कहा जाता है?", o: ["A) सेरीकल्चर", "B) एपीकल्चर", "C) पीसीकल्चर", "D) एक्वाकल्चर"], a: 1, exps: ["रेशम कीट पालन", "मधुमक्खी पालन", "मछली पालन", "जलीय जीव पालन"] },
+            { q: "रेशम कीट पालन को क्या कहा जाता है?", o: ["A) सेरीकल्चर", "B) एपीकल्चर", "C) हॉर्टिकल्चर", "D) विटीकल्चर"], a: 0, exps: ["रेशम कीट पालन", "मधुमक्खी पालन", "बागवानी", "अंगूर की खेती"] },
+            { q: "मछली पालन को क्या कहा जाता है?", o: ["A) सेरीकल्चर", "B) पीसीकल्चर", "C) एपीकल्चर", "D) सिल्विकल्चर"], a: 1, exps: ["रेशम कीट", "मछली पालन", "मधुमक्खी", "वन/पेड़ लगाना"] },
+            { q: "लाख कीट का वैज्ञानिक नाम क्या है?", o: ["A) एपिस मेलिफेरा", "B) लैसिफर लक्का", "C) बॉम्बेक्स मोरी", "D) डैक्टाइलोपियस"], a: 1, exps: ["मधुमक्खी", "लाख का कीड़ा", "रेशम का कीड़ा", "कोचीनियल कीड़ा"] }
+        ];
+
+        const allTests = [test1Data, test2Data, test3Data];
+        const testTitles = ["YouTube Video Test", "2nd Test (Advanced)", "Mega Practice Test"];
+        let currentQuizData = [];
         let currentIdx = 0;
-        let answers = new Array(50).fill(null);
+        let score = 0;
+        let questionLocked = false;
 
-        function startQuiz(l) {
-            currentLang = l;
+        // Upgraded Zero-Dependency Audio Engine
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function playSound(type) {
+            if (!audioCtx) audioCtx = new AudioContext();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); 
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth'; 
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime); 
+                osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.6); 
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.6); 
+            }
+        }
+
+        function startQuiz(testNumber) {
+            currentQuizData = allTests[testNumber - 1];
+            document.getElementById('testTitleIndicator').innerText = testTitles[testNumber - 1];
+            
             document.getElementById('langScreen').style.display = 'none';
             document.getElementById('quizScreen').style.display = 'block';
             showQ();
         }
 
         function showQ() {
-            const q = quizData[currentLang][currentIdx];
-            document.getElementById('questionCount').innerText = currentLang === 'en' ? `Question ${currentIdx + 1} of 50` : `प्रश्न ${currentIdx + 1} / 50`;
-            document.getElementById('questionText').innerText = q.q;
-            document.getElementById('progressBar').style.width = `${((currentIdx + 1)/50)*100}%`;
+            questionLocked = false;
+            document.getElementById('nextBtn').disabled = true;
+            const q = currentQuizData[currentIdx];
+            document.getElementById('questionCount').innerText = `Question ${currentIdx + 1} of 50`;
+            document.getElementById('questionText').innerText = `Q${currentIdx + 1}. ${q.q}`;
+            document.getElementById('progressBar').style.width = `${((currentIdx + 1) / 50) * 100}%`;
 
             const grid = document.getElementById('optionsGrid');
             grid.innerHTML = '';
             q.o.forEach((txt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'option' + (answers[currentIdx] === i ? ' selected' : '');
-                btn.innerHTML = `<span>${txt}</span> <i class="fa-regular ${answers[currentIdx] === i ? 'fa-circle-check' : 'fa-circle'}"></i>`;
-                btn.onclick = () => { answers[currentIdx] = i; showQ(); };
+                const btn = document.createElement('div');
+                btn.className = 'option';
+                btn.innerHTML = `<span>${txt}</span> <i class="fa-regular fa-circle" id="icon-${i}"></i>`;
+                btn.onclick = () => selectOption(btn, i, q.a);
                 grid.appendChild(btn);
             });
+        }
 
-            document.getElementById('prevBtn').disabled = currentIdx === 0;
-            const nBtn = document.getElementById('nextBtn');
-            if(currentIdx === 49) {
-                nBtn.innerHTML = currentLang === 'en' ? 'Finish Test <i class="fa-solid fa-flag-checkered"></i>' : 'टेस्ट समाप्त करें <i class="fa-solid fa-flag-checkered"></i>';
-                nBtn.style.background = '#2e7d32';
+        function selectOption(selectedBtn, selectedIndex, correctIndex) {
+            if (questionLocked) return;
+            questionLocked = true;
+
+            const allOptions = document.querySelectorAll('.option');
+            const q = currentQuizData[currentIdx]; 
+
+            allOptions.forEach((opt, i) => {
+                opt.classList.add('locked');
+                
+                // Advanced Explanation Feature - Design Tweak
+                const expSpan = document.createElement('span');
+                expSpan.style.fontSize = '13.5px';
+                expSpan.style.fontStyle = 'normal';
+                expSpan.style.marginLeft = '15px'; // ऑप्शन के टेक्स्ट के ठीक आगे थोड़ा स्पेस
+                expSpan.style.fontWeight = '700';
+                expSpan.style.background = 'rgba(255, 255, 255, 0.9)';
+                expSpan.style.padding = '2px 10px';
+                expSpan.style.borderRadius = '12px';
+                expSpan.style.display = 'inline-block'; // टेक्स्ट के साथ जोड़ने के लिए
+                expSpan.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.1)';
+
+                // Fetching specific explanation for each option
+                let explanationText = (q.exps && q.exps[i]) ? q.exps[i] : (i === correctIndex ? "सही उत्तर" : "गलत उत्तर");
+
+                if (i === correctIndex) {
+                    expSpan.innerText = `✔️ ${explanationText}`;
+                    expSpan.style.color = '#1e402f'; // Dark Green
+                    opt.classList.add('correct', 'anim-pop');
+                    opt.querySelector('i').className = "fa-solid fa-circle-check";
+                } else if (i === selectedIndex && selectedIndex !== correctIndex) {
+                    expSpan.innerText = `❌ ${explanationText}`;
+                    expSpan.style.color = '#742a2a'; // Dark Red
+                    opt.classList.add('wrong', 'anim-shake');
+                    opt.querySelector('i').className = "fa-solid fa-circle-xmark";
+                } else {
+                    // For the unselected wrong options
+                    expSpan.innerText = `💡 ${explanationText}`;
+                    expSpan.style.color = '#5a677d'; // Gray/Blue
+                }
+
+                // 🌟 सबसे बड़ा बदलाव: इसे सीधे 'ऑप्शन टेक्स्ट' वाले <span> के अंदर जोड़ रहे हैं
+                // ताकि यह लास्ट में जाने के बजाय टेक्स्ट के बिल्कुल साथ जुड़ जाए
+                opt.querySelector('span').appendChild(expSpan);
+            });
+
+            if (selectedIndex === correctIndex) {
+                playSound('correct');
+                score++;
             } else {
-                nBtn.innerHTML = currentLang === 'en' ? 'Next <i class="fa-solid fa-arrow-right"></i>' : 'आगे बढ़ें <i class="fa-solid fa-arrow-right"></i>';
-                nBtn.style.background = 'var(--primary)';
+                playSound('wrong');
             }
+            document.getElementById('nextBtn').disabled = false;
         }
 
         function nextQuestion() {
-            if(currentIdx < 49) { currentIdx++; showQ(); } else { results(); }
-        }
-
-        function prevQuestion() {
-            if(currentIdx > 0) { currentIdx--; showQ(); }
+            if (currentIdx < 49) { currentIdx++; showQ(); } else { results(); }
         }
 
         function results() {
-            let score = 0;
-            quizData[currentLang].forEach((q, i) => { if(answers[i] === q.a) score++; });
             document.getElementById('quizScreen').style.display = 'none';
             document.getElementById('resultScreen').style.display = 'block';
             document.getElementById('scoreDisplay').innerText = score;
-            
-            const perc = (score/50)*100;
+            const perc = (score / 50) * 100;
             const h = document.getElementById('resultHeading');
             const m = document.getElementById('messageBox');
             
             if(perc >= 80) {
-                h.innerText = currentLang === 'en' ? "👑 MJPRU Livestock Topper!" : "👑 एमजेपीआरयू लाइवस्टॉक टॉपर!";
-                m.innerText = currentLang === 'en' ? "Amazing score! Your knowledge about breed characteristics, housing parameters, and metabolic diseases is exceptional. You are perfectly ready to secure top marks in the MJPRU main exams!" : "अद्भुत परफॉरमेंस! पशुओं की ब्रीड्स, मिल्क कंपोजिशन और पोल्ट्री मैनेजमेंट पर आपका गजब का कंट्रोल है। एमजेपीआरयू मेन एग्जाम्स में आप निश्चित ही टॉप करने वाले हैं!";
+                h.innerText = "👑 Ultimate Livestock Topper!";
+                m.innerText = "क्या बात है! आपने इस टेस्ट में कमाल कर दिया। आप कल के एग्जाम में पक्का टॉप करने वाले हैं!";
             } else if(perc >= 50) {
-                h.innerText = currentLang === 'en' ? "✨ Good Academic Score!" : "✨ सराहनीय प्रयास!";
-                m.innerText = currentLang === 'en' ? "Well tried! Your basics about gestation periods and animal diseases are solid. Just revise the feeding and nutrition charts on Razaagripoint to convert this to 90%+." : "बहुत बढ़िया! यूनिवर्सिटी पैटर्न के हिसाब से आपका स्कोर काफी बेहतर है। बस विभिन्न पशुओं के राशन (Dry Matter Requirement) और स्पेस मैनेजमेंट की सारणी को एक बार और दोहरा लें!";
+                h.innerText = "✨ Superb Effort!";
+                m.innerText = "बहुत बढ़िया! आपके मैक्सिमम कांसेप्ट क्लियर हैं। जो सवाल गलत हुए हैं, उन्हें एक बार ध्यान में रखें, आपका सिलेक्शन तय है!";
             } else {
-                h.innerText = currentLang === 'en' ? "📚 Keep Revising!" : "📚 निरंतर अभ्यास करें!";
-                m.innerText = currentLang === 'en' ? "Livestock Management requires structural focus. Re-read the dairy management and diseases notes on the dashboard and try again." : "पशुपालन और डेयरी साइंस का सिलेबस थोड़ा विस्तृत है। सेमेस्टर डैशबोर्ड से 'Livestock Production' के प्रीमियम नोट्स को एक बार फिर पढ़ें और दोबारा टेस्ट दें!";
+                h.innerText = "📚 Keep Learning!";
+                m.innerText = "कोई बात नहीं! गलतियों से ही सीखते हैं। अब आपको सारे सही ग्रीन आंसर पता चल गए हैं। इन्हें याद रखिए और एग्जाम में फोड़ दीजिए!";
             }
         }
 
+        function generateCertificate() {
+            const nameInput = document.getElementById('studentName').value.trim();
+            if (!nameInput) {
+                alert("Please enter your name to generate the certificate!");
+                return;
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 1200;
+            canvas.height = 850;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#FAFAFA';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#004d40';
+            ctx.lineWidth = 20;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+            ctx.strokeStyle = '#D4AF37';
+            ctx.lineWidth = 6;
+            ctx.strokeRect(48, 48, canvas.width - 96, canvas.height - 96);
+
+            ctx.fillStyle = '#004d40';
+            ctx.fillRect(35, 35, 30, 30);
+            ctx.fillRect(canvas.width - 65, 35, 30, 30);
+            ctx.fillRect(35, canvas.height - 65, 30, 30);
+            ctx.fillRect(canvas.width - 65, canvas.height - 65, 30, 30);
+
+            ctx.save();
+            ctx.globalAlpha = 0.04;
+            ctx.fillStyle = '#004d40';
+            ctx.font = 'bold 130px Arial';
+            ctx.textAlign = 'center';
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(-Math.PI / 6); 
+            ctx.fillText('RAZAAGRIPOINT', 0, 0);
+            ctx.restore(); 
+
+            ctx.fillStyle = '#004d40';
+            ctx.font = 'bold 50px Georgia, serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('CERTIFICATE OF EXCELLENCE', 600, 160);
+            
+            ctx.fillStyle = '#D4AF37';
+            ctx.font = 'bold 22px Arial, sans-serif';
+            ctx.fillText('THIS IS PROUDLY PRESENTED TO', 600, 230);
+
+            ctx.fillStyle = '#b71c1c';
+            ctx.font = 'bold 65px "Times New Roman", Times, serif';
+            ctx.fillText(nameInput.toUpperCase(), 600, 325);
+
+            ctx.strokeStyle = '#D4AF37';
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(300, 355); ctx.lineTo(900, 355); ctx.stroke();
+
+            ctx.fillStyle = '#333333';
+            ctx.font = '22px Arial, sans-serif';
+            ctx.fillText('For demonstrating outstanding academic performance by scoring', 600, 420);
+            
+            ctx.fillStyle = '#004d40';
+            ctx.fillRect(430, 450, 340, 60);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 30px Arial';
+            ctx.fillText(`${score} MARKS OUT OF 50`, 600, 492);
+
+            ctx.fillStyle = '#333333';
+            ctx.font = '22px Arial, sans-serif';
+            const currentTestName = document.getElementById('testTitleIndicator').innerText;
+            ctx.fillText(`in the online Mock Examination (${currentTestName}) for Livestock Production and Management.`, 600, 560);
+            
+            ctx.fillStyle = '#555555';
+            ctx.font = 'italic 20px Arial, sans-serif';
+            ctx.fillText('Syllabus Based on Mahatma Jyotibha Phoole Rohelkhand University (MJPRU).', 600, 600);
+
+            const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(150, 720); ctx.lineTo(350, 720); ctx.stroke();
+            
+            ctx.fillStyle = '#333333';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText(dateStr, 250, 705);
+            
+            ctx.font = '18px Arial';
+            ctx.fillText('Date of Completion', 250, 745);
+
+            ctx.beginPath(); ctx.moveTo(850, 720); ctx.lineTo(1050, 720); ctx.stroke();
+            
+            ctx.fillStyle = '#004d40';
+            ctx.font = 'bold 24px cursive, "Brush Script MT", serif'; 
+            ctx.fillText('Mushahid Raza', 950, 705);
+            
+            ctx.fillStyle = '#333333';
+            ctx.font = '18px Arial';
+            ctx.fillText('Admin / Founder', 950, 745);
+
+            ctx.beginPath();
+            ctx.arc(600, 715, 60, 0, Math.PI * 2);
+            ctx.fillStyle = '#D4AF37'; 
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#b71c1c'; 
+            ctx.stroke();
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 15px Arial';
+            ctx.fillText('RAZAAGRIPOINT', 600, 710);
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText('VERIFIED', 600, 735);
+
+            const downloadLink = document.createElement('a');
+            downloadLink.download = `${nameInput.replace(/\s+/g, '_')}_Livestock_Certificate.png`;
+            downloadLink.href = canvas.toDataURL('image/png');
+            downloadLink.click();
+        }
+
         function restartQuiz() {
-            currentIdx = 0; answers.fill(null);
+            currentIdx = 0; score = 0; currentQuizData = [];
+            document.getElementById('studentName').value = '';
             document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'none';
             document.getElementById('langScreen').style.display = 'block';
         }
     </script>
