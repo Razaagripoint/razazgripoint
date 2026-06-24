@@ -1,333 +1,1111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Razaagripoint - The Ultimate Agriculture Study Hub</title>
-    <style>
-        /* --- Color Scheme & Typography --- */
-        :root {
-            --primary-green: #2e7d32;
-            --light-green: #e8f5e9;
-            --dark-green: #1b5e20;
-            --accent-yellow: #fbc02d;
-            --text-dark: #333333;
-            --text-light: #666666;
-            --white: #ffffff;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Razaagripoint — BSc Agriculture Study Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            scroll-behavior: smooth;
-        }
+    /* ── THEME VARIABLES ── */
+    :root {
+      --orange:      #ff6b35;
+      --orange-dark: #e85520;
+      --orange-light:#fff3ee;
+      --green:       #1a7a4a;
+      --green-light: #e8f5ef;
+      --green-dark:  #145c38;
+      --yellow:      #ffc107;
+      --blue:        #0066ff;
+      --dark:        #1a1a2e;
+      --dark2:       #16213e;
+      --gray:        #6b7280;
+      --gray-light:  #f3f4f6;
+      --white:       #ffffff;
+      --text:        #1f2937;
+      --border:      #e5e7eb;
+      --nav-bg:      rgba(255, 255, 255, 0.85);
+      --bg-body:     #ffffff;
+    }
 
-        body {
-            background-color: #f9fbf9;
-            color: var(--text-dark);
-        }
+    /* Dark Mode Theme */
+    [data-theme="dark"] {
+      --bg-body:     #0f172a;
+      --white:       #1e293b;
+      --dark:        #f8fafc;
+      --text:        #cbd5e1;
+      --gray-light:  #0f172a;
+      --gray:        #94a3b8;
+      --border:      #334155;
+      --nav-bg:      rgba(15, 23, 42, 0.85);
+      --orange-light:#33221b;
+      --green-light: #162c21;
+    }
 
-        /* --- Navigation Bar --- */
-        nav {
-            background-color: var(--primary-green);
-            padding: 15px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
+    html { scroll-behavior: smooth; }
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background: var(--bg-body); 
+      color: var(--text); 
+      overflow-x: hidden; 
+      transition: background 0.3s ease, color 0.3s ease;
+    }
 
-        .logo {
-            color: var(--white);
-            font-size: 26px;
-            font-weight: 800;
-            text-decoration: none;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    /* ── NOTICE TICKER ── */
+    .notice-bar {
+      background: linear-gradient(90deg, #ff6b35, #e85520);
+      color: white;
+      padding: 10px 0;
+      overflow: hidden;
+      cursor: pointer;
+    }
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 25px;
-        }
+    .notice-inner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 20px;
+    }
 
-        .nav-links li a {
-            color: var(--white);
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: 0.3s;
-        }
+    .notice-pill {
+      background: white;
+      color: var(--orange);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+      animation: pulseBadge 1.5s infinite;
+      flex-shrink: 0;
+    }
 
-        .nav-links li a:hover {
-            color: var(--accent-yellow);
-        }
+    @keyframes pulseBadge {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.06); }
+    }
 
-        /* --- Live Notice Board (NEW) --- */
-        .notice-ticker {
-            background-color: #fff3e0;
-            color: #e65100;
-            padding: 10px 20px;
-            font-size: 15px;
-            font-weight: bold;
-            border-bottom: 1px solid #ffe0b2;
-            display: flex;
-            align-items: center;
-        }
-        
-        .notice-ticker span {
-            background: #e65100;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            margin-right: 15px;
-            white-space: nowrap;
-        }
+    .notice-scroll {
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      animation: ticker 28s linear infinite;
+    }
 
-        /* --- Advanced Hero Section --- */
-        .hero {
-            text-align: center;
-            padding: 80px 20px 120px 20px;
-            background: linear-gradient(135deg, rgba(46, 125, 50, 0.9), rgba(27, 94, 32, 0.9)), url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
-            color: var(--white);
-            position: relative;
-        }
+    .notice-bar:hover .notice-scroll { animation-play-state: paused; }
 
-        .hero h1 { font-size: 52px; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .hero h1 span { color: var(--accent-yellow); }
-        .hero p { font-size: 20px; margin-bottom: 30px; font-weight: 400; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+    @keyframes ticker {
+      0%   { transform: translateX(50vw); }
+      100% { transform: translateX(-100%); }
+    }
 
-        .hero-badges { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
-        .badge { background: rgba(255, 255, 255, 0.2); padding: 8px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3); }
+    /* ── GLASSMORPHISM NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 60px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
 
-        .btn-main { background-color: var(--accent-yellow); color: var(--dark-green); padding: 15px 35px; text-decoration: none; border-radius: 30px; font-size: 18px; font-weight: bold; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: inline-block; }
-        .btn-main:hover { transform: translateY(-3px); background-color: #fbc02d; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
 
-        /* --- Key Features Section --- */
-        .features-section { padding: 40px 50px; background: var(--white); max-width: 1200px; margin: -60px auto 40px auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); position: relative; z-index: 10; }
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; text-align: center; }
-        .feature-box { padding: 20px; }
-        .feature-icon { font-size: 40px; margin-bottom: 15px; }
-        .feature-box h3 { color: var(--dark-green); margin-bottom: 10px; font-size: 20px; }
-        .feature-box p { color: var(--text-light); font-size: 15px; line-height: 1.5; }
+    .nav-logo img {
+      height: 42px; width: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--orange);
+      object-fit: cover;
+    }
 
-        /* --- Stats Section (NEW) --- */
-        .stats-container { background: var(--light-green); padding: 40px 20px; text-align: center; margin-bottom: 40px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1000px; margin: auto; }
-        .stat-box h2 { font-size: 40px; color: var(--primary-green); margin-bottom: 5px; }
-        .stat-box p { font-size: 16px; color: var(--dark-green); font-weight: bold; }
+    .logo-fallback {
+      height: 42px; width: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 800; font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+    }
 
-        /* --- Generic Section Style --- */
-        .section-container { padding: 60px 50px; max-width: 1200px; margin: auto; }
-        .section-title { text-align: center; font-size: 36px; color: var(--primary-green); margin-bottom: 10px; font-weight: 800; }
-        .section-subtitle { text-align: center; color: var(--text-light); margin-bottom: 40px; font-size: 18px; }
+    .nav-logo-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800; font-size: 1.25rem;
+      color: var(--dark);
+    }
 
-        /* --- Semester Buttons Grid --- */
-        .semester-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .semester-card { background: var(--white); padding: 40px 20px; border-radius: 12px; text-align: center; border: 2px solid #c8e6c9; text-decoration: none; color: var(--dark-green); transition: all 0.3s ease; display: block; position: relative; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .semester-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--primary-green); transition: 0.3s; }
-        .semester-card:hover { background: var(--primary-green); color: var(--white); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(46, 125, 50, 0.2); }
-        .semester-card:hover::before { width: 100%; z-index: -1; }
-        .semester-card h3 { font-size: 28px; margin-bottom: 10px; position: relative; z-index: 2; }
-        .semester-card p { font-size: 16px; font-weight: 600; position: relative; z-index: 2; }
+    .nav-logo-text span { color: var(--orange); }
 
-        /* --- About & Community Section (NEW) --- */
-        .about-community { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; max-width: 1200px; margin: 20px auto 60px auto; padding: 0 50px; }
-        
-        .about-box { background: white; padding: 30px; border-radius: 15px; border: 1px solid #c8e6c9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .about-box h3 { color: var(--primary-green); margin-bottom: 15px; font-size: 24px; }
-        .about-box p { color: var(--text-light); line-height: 1.6; margin-bottom: 15px; }
-        
-        .community-box { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 40px 30px; border-radius: 15px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 10px 20px rgba(46, 125, 50, 0.3); }
-        .community-box h3 { font-size: 28px; margin-bottom: 15px; color: var(--accent-yellow); }
-        .community-box p { font-size: 16px; margin-bottom: 25px; line-height: 1.5; }
-        .btn-telegram { background: #0088cc; color: white; padding: 12px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 18px; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .btn-telegram:hover { background: #006699; transform: scale(1.05); }
+    .nav-links { list-style: none; display: flex; gap: 8px; }
 
-        /* --- Study Tips Section --- */
-        .tips-section { background-color: var(--dark-green); color: var(--white); padding: 60px 20px; }
-        .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
-        .tip-card { background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); }
-        .tip-card h4 { color: var(--accent-yellow); font-size: 20px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-        .tip-card p { font-size: 15px; line-height: 1.6; color: #e8f5e9; }
+    .nav-links a {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 0.9rem;
+      color: var(--gray);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
 
-        /* --- Footer --- */
-        footer { background-color: #1a1a1a; color: #ccc; text-align: center; padding: 30px 20px; }
-        footer p { margin-bottom: 10px; }
-        footer span { color: var(--accent-yellow); font-weight: bold; }
-    </style>
+    .nav-links a:hover { color: var(--orange); background: var(--orange-light); }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+
+    .btn-nav-outline {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 0.85rem;
+      color: var(--green); border: 2px solid var(--green);
+      background: transparent; padding: 8px 20px;
+      border-radius: 8px; cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-nav-outline:hover { background: var(--green); color: white; }
+
+    .btn-nav-fill {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 0.85rem;
+      color: white; background: var(--orange);
+      border: none; padding: 10px 22px;
+      border-radius: 8px; cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(255,107,53,0.35);
+    }
+
+    .btn-nav-fill:hover { background: var(--orange-dark); transform: translateY(-1px); }
+
+    /* ── HAMBURGER & MOBILE MENU ── */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--dark);
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 72px; left: -100%;
+      width: 80%; height: calc(100vh - 72px);
+      background: var(--white);
+      box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+      display: flex; flex-direction: column;
+      padding: 30px 20px; gap: 20px;
+      transition: left 0.3s ease-in-out;
+      z-index: 199;
+      border-right: 1px solid var(--border);
+    }
+
+    .mobile-menu.active { left: 0; }
+
+    .mobile-menu a {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 1.1rem;
+      color: var(--dark); text-decoration: none;
+      padding: 12px; border-radius: 8px;
+    }
+    .mobile-menu a:hover { background: var(--orange-light); color: var(--orange); }
+
+    .theme-toggle {
+      background: var(--gray-light);
+      border: 1px solid var(--border);
+      color: var(--dark);
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { transform: scale(1.05); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0f2027 0%, #145c38 50%, #1a7a4a 100%);
+      padding: 80px 60px;
+      display: flex; align-items: center; gap: 60px;
+      min-height: 88vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: rgba(255,107,53,0.1);
+      top: -100px; right: -100px;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,193,7,0.08);
+      bottom: -80px; left: 30%;
+    }
+
+    .hero-left { flex: 1; position: relative; z-index: 1; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,107,53,0.2);
+      border: 1px solid rgba(255,107,53,0.4);
+      color: #ffb08a;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 0.8rem;
+      padding: 6px 16px; border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      line-height: 1.15;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .highlight {
+      color: var(--yellow);
+      position: relative;
+    }
+
+    .hero h1 .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 2px; left: 0; right: 0;
+      height: 4px;
+      background: var(--orange);
+      border-radius: 2px;
+      opacity: 0.6;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem; color: #a7c5b5;
+      line-height: 1.75; margin-bottom: 36px;
+      max-width: 540px;
+    }
+
+    .hero-badges {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 36px;
+    }
+
+    .hero-badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 0.78rem;
+      padding: 6px 14px; border-radius: 20px;
+    }
+
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .btn-hero-main {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      color: white; background: var(--orange);
+      border: none; padding: 16px 36px;
+      border-radius: 10px; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      box-shadow: 0 6px 20px rgba(255,107,53,0.45);
+      transition: all 0.25s;
+    }
+
+    .btn-hero-main:hover { background: var(--orange-dark); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,107,53,0.5); }
+
+    .btn-hero-ghost {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      color: white; background: transparent;
+      border: 2px solid rgba(255,255,255,0.4);
+      padding: 16px 36px; border-radius: 10px;
+      cursor: pointer; text-decoration: none;
+      display: inline-block; transition: all 0.2s;
+    }
+
+    .btn-hero-ghost:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+    .hero-right {
+      flex: 0 0 340px;
+      position: relative; z-index: 1;
+    }
+
+    .stats-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .stats-card h3 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      color: #1a1a2e; margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .stats-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-bottom: 24px;
+    }
+
+    .stat-box {
+      background: #f3f4f6;
+      border-radius: 12px; padding: 18px 12px;
+      text-align: center;
+    }
+
+    .stat-box .num {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800; font-size: 1.8rem;
+      color: var(--orange); line-height: 1;
+    }
+
+    .stat-box .lbl {
+      font-size: 0.75rem; color: #6b7280;
+      font-weight: 500; margin-top: 4px;
+    }
+
+    .card-cta {
+      display: block; width: 100%;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 0.95rem;
+      color: white; background: linear-gradient(135deg, var(--green), var(--green-dark));
+      border: none; padding: 14px;
+      border-radius: 10px; cursor: pointer;
+      text-decoration: none; text-align: center;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(26,122,74,0.35);
+    }
+
+    .card-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(26,122,74,0.45); }
+
+    /* ── FEATURES STRIP ── */
+    .features-strip {
+      background: var(--gray-light);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+
+    .features-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+    }
+
+    .feat-item {
+      padding: 36px 32px;
+      display: flex; align-items: flex-start; gap: 18px;
+      border-right: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    .feat-item:last-child { border-right: none; }
+    .feat-item:hover { background: var(--white); }
+
+    .feat-icon-wrap {
+      width: 52px; height: 52px; flex-shrink: 0;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .feat-icon-wrap.orange { background: var(--orange-light); }
+    .feat-icon-wrap.green  { background: var(--green-light); }
+    .feat-icon-wrap.blue   { background: #e8f0ff; }
+
+    .feat-text h3 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      color: var(--dark); margin-bottom: 6px;
+    }
+
+    .feat-text p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+
+    /* ── SECTION SHARED ── */
+    .section { padding: 80px 60px; max-width: 1200px; margin: 0 auto; }
+
+    .sec-eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 0.75rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 12px;
+    }
+
+    .sec-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: var(--dark); line-height: 1.2; margin-bottom: 12px;
+    }
+
+    .sec-title span { color: var(--orange); }
+
+    .sec-sub { font-size: 0.95rem; color: var(--gray); line-height: 1.7; max-width: 600px; }
+
+    /* ── SEMESTER CARDS ── */
+    .semester-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px; margin-top: 44px;
+    }
+
+    .sem-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-decoration: none;
+      display: block;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sem-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green), var(--orange));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .sem-card:hover::before { transform: scaleX(1); }
+
+    .sem-card:hover {
+      border-color: var(--orange);
+      box-shadow: 0 8px 30px rgba(255,107,53,0.15);
+      transform: translateY(-4px);
+    }
+
+    .sem-top {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 16px;
+    }
+
+    .sem-pill {
+      background: var(--green-light);
+      color: var(--green);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 0.72rem;
+      padding: 4px 12px; border-radius: 20px;
+    }
+
+    .sem-icon { font-size: 1.8rem; }
+
+    .sem-card h3 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800; font-size: 1.25rem;
+      color: var(--dark); margin-bottom: 8px;
+    }
+
+    .sem-card p {
+      font-size: 0.83rem; color: var(--gray); margin-bottom: 20px;
+    }
+
+    .sem-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 0.82rem;
+      color: var(--orange);
+      transition: gap 0.2s;
+    }
+
+    .sem-card:hover .sem-btn { gap: 10px; }
+
+    /* ── ABOUT + COMMUNITY ── */
+    .two-col-section {
+      background: linear-gradient(135deg, #f0faf5, #fff8f5);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 60px;
+    }
+    
+    [data-theme="dark"] .two-col-section {
+        background: linear-gradient(135deg, #101c17, #1c1411);
+    }
+
+    .two-col-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 32px; align-items: stretch;
+    }
+
+    .about-card-pw {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px 36px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .about-card-pw .avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--orange));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; margin-bottom: 20px;
+    }
+
+    .about-card-pw h3 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800; font-size: 1.2rem;
+      color: var(--dark); margin-bottom: 14px;
+    }
+
+    .about-card-pw p {
+      font-size: 0.9rem; color: var(--gray);
+      line-height: 1.75; margin-bottom: 12px;
+    }
+
+    .about-card-pw p strong { color: var(--dark); }
+
+    .btn-about-pw {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 0.88rem;
+      color: white; background: var(--green);
+      border: none; padding: 12px 28px;
+      border-radius: 10px; cursor: pointer;
+      text-decoration: none; margin-top: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(26,122,74,0.3);
+    }
+
+    .btn-about-pw:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+    .community-card-pw {
+      background: linear-gradient(135deg, #0f2027, #1a4a6b);
+      border-radius: 20px;
+      padding: 40px 36px;
+      color: white;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    .tg-icon {
+      width: 60px; height: 60px;
+      background: #0088cc;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; margin-bottom: 20px;
+    }
+
+    .community-card-pw h3 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800; font-size: 1.3rem;
+      color: var(--yellow); margin-bottom: 14px;
+    }
+
+    .community-card-pw p {
+      font-size: 0.9rem; color: #b0c8d4;
+      line-height: 1.75; margin-bottom: 28px;
+    }
+
+    .btn-tg {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 0.95rem;
+      color: white; background: #0088cc;
+      border: none; padding: 14px 32px;
+      border-radius: 10px; cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(0,136,204,0.4);
+      align-self: flex-start;
+    }
+
+    .btn-tg:hover { background: #006699; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,136,204,0.5); }
+
+    /* ── TIPS ── */
+    .tips-bg {
+      background: #1a1a2e;
+      padding: 80px 60px;
+    }
+
+    .tips-inner { max-width: 1200px; margin: 0 auto; }
+
+    .tips-inner .sec-title { color: white; }
+    .tips-inner .sec-sub   { color: #8090a0; }
+    .tips-inner .sec-eyebrow { color: var(--yellow); }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; margin-top: 44px;
+    }
+
+    .tip-card-pw {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 28px 24px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .tip-card-pw:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,107,53,0.4);
+    }
+
+    .tip-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: rgba(255,107,53,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 18px;
+    }
+
+    .tip-card-pw h4 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      color: white; margin-bottom: 10px;
+    }
+
+    .tip-card-pw p { font-size: 0.85rem; color: #8090a0; line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #111827;
+      padding: 48px 60px;
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 20px;
+    }
+
+    .footer-logo-wrap { display: flex; align-items: center; gap: 12px; }
+
+    .footer-logo-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800; font-size: 1.2rem; color: white;
+    }
+
+    .footer-logo-text span { color: var(--orange); }
+
+    .footer-copy {
+      font-size: 0.82rem; color: #6b7280; line-height: 1.8; text-align: right;
+    }
+
+    .footer-copy strong { color: #9ca3af; }
+
+    /* ── PREMIUM CLICK EFFECTS (Ripple + Glow) ── */
+    a, button, .sem-card, .notice-ticker {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-nav-fill:active, .btn-hero-main:active, .card-cta:active, 
+    .btn-about-pw:active, .btn-tg:active, .sem-card:active {
+      transform: scale(0.96) !important;
+      transition: transform 0.1s;
+    }
+
+    .ripple-element { position: relative; overflow: hidden; }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple-animation 0.6s linear;
+      background-color: rgba(255, 255, 255, 0.4);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .sem-card .ripple {
+      background-color: rgba(255, 107, 53, 0.2); 
+    }
+
+    @keyframes ripple-animation {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* GLOW ANIMATION */
+    @keyframes glow-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7); }
+      50%  { box-shadow: 0 0 25px 10px rgba(255, 107, 53, 0.8); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0); }
+    }
+
+    .click-glow {
+      animation: glow-pulse 0.4s ease-out forwards;
+      z-index: 10;
+      border-color: var(--orange) !important;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links, .nav-right .btn-nav-outline { display: none; }
+      .hamburger { display: block; }
+      .hero { flex-direction: column; padding: 60px 24px; min-height: auto; }
+      .hero-right { flex: none; width: 100%; }
+      .features-inner { grid-template-columns: 1fr; }
+      .feat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .section { padding: 60px 24px; }
+      .two-col-section { padding: 60px 24px; }
+      .two-col-inner { grid-template-columns: 1fr; }
+      .tips-bg { padding: 60px 24px; }
+      footer { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
+      .footer-copy { text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .notice-scroll, .pulseBadge, .ripple, .click-glow { animation: none; }
+    }
+  </style>
 </head>
 <body>
 
-   <!-- Navigation -->
-    <nav>
-        <!-- Logo Section -->
-        <a href="index.html" class="logo" style="display: flex; align-items: center; gap: 15px;">
-            
-            <!-- Yahan 'your-logo.png' ki jagah apne logo file ka naam daalein -->
-            <img src="logo.png" alt="Razaagripoint Logo" style="height: 50px; width: auto; border-radius: 90%;">
-            
-            Razaagripoint
-        </a>
-        
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#semesters">Syllabus</a></li>
-            <li><a href="#about">About</a></li>
-        </ul>
-    </nav>
+<nav>
+  <a href="index.html" class="nav-logo ripple-element">
+    <img src="logo.png" alt="Razaagripoint" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+    <div class="logo-fallback" style="display:none;">R</div>
+    <span class="nav-logo-text">Raza<span>agripoint</span></span>
+  </a>
 
-    <!-- Live Notice Board Ticker -->
-  <div class="notice-ticker" style="background: linear-gradient(90deg, #ffeb3b, #ffc107); border-bottom: 3px solid #f57f17; padding: 14px 20px; font-size: 18px; cursor: pointer; display: flex; align-items: center; overflow: hidden;" onclick="window.open('heritage.html', '_blank');">
-        
-        <span style="background: #d32f2f; color: white; padding: 8px 18px; border-radius: 25px; font-size: 15px; font-weight: 900; margin-right: 15px; white-space: nowrap; box-shadow: 0 4px 8px rgba(211,47,47,0.5); text-transform: uppercase; animation: pulseButton 1.5s infinite;">
-            🚨 TAKE TEST NOW
-        </span>
-        
-        <marquee behavior="scroll" direction="left" scrollamount="8" onmouseover="this.stop();" onmouseout="this.start();" style="color: #b71c1c; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0px rgba(255,255,255,0.6);">
-            🔥 Agricultural Heritage Ke 150 Most Important Questions Ke Live Test Ke Liye Yahan Click Karein  ➔&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            🔥 Agricultural Heritage Ke 150 Most Important Questions Ke Live Test Ke Liye Yahan Click Karein ➔&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            🔥 Agricultural Heritage Ke 150 Most Important Questions Ke Live Test Ke Liye Yahan Click Karein  ➔
-        </marquee>
+  <ul class="nav-links">
+    <li><a href="index.html" class="ripple-element">Home</a></li>
+    <li><a href="#semesters" class="ripple-element">Syllabus</a></li>
+    <li><a href="#about" class="ripple-element">About</a></li>
+  </ul>
 
-        <style>
-            @keyframes pulseButton {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.08); box-shadow: 0 6px 12px rgba(211,47,47,0.7); }
-                100% { transform: scale(1); }
-            }
-        </style>
+  <div class="nav-right">
+    <button class="theme-toggle ripple-element" onclick="toggleTheme()">🌙 Dark</button>
+    <a href="https://t.me/razaagripoint" target="_blank" class="btn-nav-outline ripple-element">Join Telegram</a>
+    <a href="#semesters" class="btn-nav-fill ripple-element">Get Started ➔</a>
+    <button class="hamburger ripple-element" onclick="toggleMobileMenu()">☰</button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+  <a href="#semesters" onclick="toggleMobileMenu()">Syllabus</a>
+  <a href="#about" onclick="toggleMobileMenu()">About</a>
+  <a href="https://t.me/razaagripoint" target="_blank">Join Telegram</a>
+</div>
+
+<div class="notice-ticker ripple-element" style="background: linear-gradient(90deg, #ffeb3b, #ffc107); border-bottom: 3px solid #f57f17; padding: 14px 20px; font-size: 18px; cursor: pointer; display: flex; align-items: center; overflow: hidden;" onclick="window.open('heritage.html', '_blank');">
+    <span style="background: #d32f2f; color: white; padding: 8px 18px; border-radius: 25px; font-size: 15px; font-weight: 900; margin-right: 15px; white-space: nowrap; box-shadow: 0 4px 8px rgba(211,47,47,0.5); text-transform: uppercase; animation: pulseButton 1.5s infinite;">
+        🚨 TAKE TEST NOW
+    </span>
+    <marquee behavior="scroll" direction="left" scrollamount="8" onmouseover="this.stop();" onmouseout="this.start();" style="color: #b71c1c; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 0px rgba(255,255,255,0.6);">
+        🔥 Agricultural Heritage Ke 150 Most Important Questions Ke Live Test Ke Liye Yahan Click Karein  ➔&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        🔥 Agricultural Heritage Ke 150 Most Important Questions Ke Live Test Ke Liye Yahan Click Karein ➔&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        🔥 Agricultural Heritage Ke 150 Most Important Questions Ke Live Test Ke Liye Yahan Click Karein  ➔
+    </marquee>
+    <style>
+        @keyframes pulseButton {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); box-shadow: 0 6px 12px rgba(211,47,47,0.7); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</div>
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">🌾 India's Agriculture Education Platform</div>
+    <h1>Study Smarter,<br/>Score Better in<br/><span class="highlight">BSc Agriculture</span></h1>
+    <p class="hero-sub">
+      Free video lectures, PDF notes, and live mock tests — all based on ICAR guidelines, designed for students of Mahatma Jyotibha Phoole Rohilkhand University.
+    </p>
+    <div class="hero-badges">
+      <div class="hero-badge">🎓 BSc Agriculture (Hons.)</div>
+      <div class="hero-badge">📚 ICAR Based</div>
+      <div class="hero-badge">🏫 MJPRU Syllabus</div>
+      <div class="hero-badge">💯 Absolutely Free</div>
+    </div>
+    <div class="hero-actions">
+      <a href="#semesters" class="btn-hero-main ripple-element">Explore Semesters ➔</a>
+      <a href="https://t.me/razaagripoint" target="_blank" class="btn-hero-ghost ripple-element">📱 Join Community</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stats-card">
+      <h3>🏆 Platform at a Glance</h3>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="num">6+</div>
+          <div class="lbl">Semesters</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">100+</div>
+          <div class="lbl">Video Lectures</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">50+</div>
+          <div class="lbl">Free PDFs</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">5K+</div>
+          <div class="lbl">Students</div>
+        </div>
+      </div>
+      <a href="#semesters" class="card-cta ripple-element">Start Studying Now 🚀</a>
+    </div>
+  </div>
+</div>
+
+<div class="features-strip">
+  <div class="features-inner">
+    <div class="feat-item">
+      <div class="feat-icon-wrap orange">📑</div>
+      <div class="feat-text">
+        <h3>Complete PDF Notes</h3>
+        <p>Subject-wise optimized PDFs tailored for exam preparation — download and study offline.</p>
+      </div>
+    </div>
+    <div class="feat-item">
+      <div class="feat-icon-wrap green">▶️</div>
+      <div class="feat-text">
+        <h3>Video Lectures</h3>
+        <p>Understand complex agricultural concepts easily with our dedicated YouTube lectures.</p>
+      </div>
+    </div>
+    <div class="feat-item">
+      <div class="feat-icon-wrap blue">📝</div>
+      <div class="feat-text">
+        <h3>Live Mock Tests</h3>
+        <p>Chapter-wise interactive quizzes with instant results to test your preparation level.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="semesters" class="section">
+  <div class="sec-eyebrow">BSc Agriculture (Hons.)</div>
+  <h2 class="sec-title">Choose Your <span>Semester</span></h2>
+  <p class="sec-sub">
+    Mahatma Jyotibha Phoole Rohilkhand University &amp; All Affiliated Colleges —
+    syllabus, notes, and mock tests for every semester.
+  </p>
+
+  <div class="semester-grid">
+    <a href="semester1.html" class="sem-card ripple-element">
+      <div class="sem-top">
+        <span class="sem-pill">Semester 1</span>
+        <span class="sem-icon">🌱</span>
+      </div>
+      <h3>1st Semester</h3>
+      <p>Foundations of Agronomy, Soil Science, Plant Biochemistry & more.</p>
+      <div class="sem-btn">Explore Syllabus <span>➔</span></div>
+    </a>
+
+    <a href="semester2.html" class="sem-card ripple-element">
+      <div class="sem-top">
+        <span class="sem-pill">Semester 2</span>
+        <span class="sem-icon">🌾</span>
+      </div>
+      <h3>2nd Semester</h3>
+      <p>Crop Physiology, Soil Fertility, Agricultural Meteorology & more.</p>
+      <div class="sem-btn">Explore Syllabus <span>➔</span></div>
+    </a>
+
+    <a href="semester3.html" class="sem-card ripple-element">
+      <div class="sem-top">
+        <span class="sem-pill">Semester 3</span>
+        <span class="sem-icon">🐛</span>
+      </div>
+      <h3>3rd Semester</h3>
+      <p>Agricultural Entomology, Plant Pathology, Genetics & Weed Management.</p>
+      <div class="sem-btn">Explore Syllabus <span>➔</span></div>
+    </a>
+
+    <a href="semester4.html" class="sem-card ripple-element">
+      <div class="sem-top">
+        <span class="sem-pill">Semester 4</span>
+        <span class="sem-icon">🍎</span>
+      </div>
+      <h3>4th Semester</h3>
+      <p>Olericulture, Pomology, Plant Breeding & Seed Technology.</p>
+      <div class="sem-btn">Explore Syllabus <span>➔</span></div>
+    </a>
+
+    <a href="semester5.html" class="sem-card ripple-element">
+      <div class="sem-top">
+        <span class="sem-pill">Semester 5</span>
+        <span class="sem-icon">🚜</span>
+      </div>
+      <h3>5th Semester</h3>
+      <p>Farm Machinery, Irrigation Engineering, Agricultural Economics & Extension.</p>
+      <div class="sem-btn">Explore Syllabus <span>➔</span></div>
+    </a>
+
+    <a href="semester6.html" class="sem-card ripple-element">
+      <div class="sem-top">
+        <span class="sem-pill">Semester 6</span>
+        <span class="sem-icon">🧬</span>
+      </div>
+      <h3>6th Semester</h3>
+      <p>Biotechnology, Organic Farming, Environmental Science & Rural Development.</p>
+      <div class="sem-btn">Explore Syllabus <span>➔</span></div>
+    </a>
+  </div>
+</div>
+
+<div id="about" class="two-col-section">
+  <div class="two-col-inner">
+    <div class="about-card-pw">
+      <div class="avatar">👨‍🏫</div>
+      <h3>About Razaagripoint</h3>
+      <p>Hello future Agri-Professionals! Welcome to Razaagripoint — a platform built specifically for BSc Agriculture students to simplify tough concepts into easy-to-understand lectures and notes.</p>
+      <p>Created and managed by <strong>Mushahid Raza</strong>, this platform provides everything you need — from Agronomy to Genetics — all strictly based on ICAR guidelines, absolutely free of cost.</p>
+      <a href="about_admin.html" class="btn-about-pw ripple-element">Know More About Admin ➔</a>
     </div>
 
-    <!-- Advanced Hero Section -->
-    <div class="hero">
-        <div class="hero-badges">
-            <div class="badge">🎓 BSc Agriculture (Hons.)</div>
-            <div class="badge">📚 ICAR Guidelines Based</div>
-        </div>
-        <h1>Welcome to <span>Razaagripoint</span></h1>
-        <p>Your one-stop destination for high-quality study materials, video lectures, and live mock tests designed specifically for Agriculture students.</p>
-        <a href="#semesters" class="btn-main">Get Started Now ➔</a>
+    <div class="community-card-pw">
+      <div class="tg-icon">📱</div>
+      <h3>Join Our Telegram Community</h3>
+      <p>Never miss an update! Get instant notifications about new PDF uploads, exam tips, mock tests, and video lectures — all in one place.</p>
+      <a href="https://t.me/razaagripoint" target="_blank" class="btn-tg ripple-element">
+        <span>📲</span> Join Telegram Group
+      </a>
     </div>
+  </div>
+</div>
 
-    <!-- Key Features / Highlights -->
-    <div class="features-section">
-        <div class="feature-grid">
-            <div class="feature-box">
-                <div class="feature-icon">📑</div>
-                <h3>Complete PDF Notes</h3>
-                <p>Download subject-wise, highly optimized PDF notes tailored for your exam preparation.</p>
-            </div>
-            <div class="feature-box">
-                <div class="feature-icon">▶️</div>
-                <h3>Video Lectures</h3>
-                <p>Understand complex agricultural concepts easily with our dedicated YouTube lectures.</p>
-            </div>
-            <div class="feature-box">
-                <div class="feature-icon">📝</div>
-                <h3>Live Mock Tests</h3>
-                <p>Test your knowledge with chapter-wise interactive quizzes and get instant results.</p>
-            </div>
-        </div>
+<div class="tips-bg">
+  <div class="tips-inner">
+    <div class="sec-eyebrow">Smart Strategies</div>
+    <h2 class="sec-title">Topper's Study Tips</h2>
+    <p class="sec-sub">Proven strategies to score higher in your Agriculture exams.</p>
+
+    <div class="tips-grid">
+      <div class="tip-card-pw">
+        <div class="tip-icon">🎯</div>
+        <h4>Focus on Fundamentals</h4>
+        <p>Agriculture subjects like Agronomy and Soil Science require a strong grip on basics. Always clear doubts before moving to advanced topics.</p>
+      </div>
+      <div class="tip-card-pw">
+        <div class="tip-icon">📝</div>
+        <h4>Solve Previous Papers</h4>
+        <p>We provide previous year question papers in the PDF sections. Solving them gives a clear idea of exam pattern and frequently asked questions.</p>
+      </div>
+      <div class="tip-card-pw">
+        <div class="tip-icon">⏱️</div>
+        <h4>Use Mock Tests</h4>
+        <p>Don't just read! Use our built-in interactive Mock Tests at the bottom of every semester page to evaluate your preparation level.</p>
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- Stats Section -->
-    <div class="stats-container">
-        <div class="stats-grid">
-            <div class="stat-box">
-                <h2>6+</h2>
-                <p>Semesters Covered</p>
-            </div>
-            <div class="stat-box">
-                <h2>100+</h2>
-                <p>Video Lectures</p>
-            </div>
-            <div class="stat-box">
-                <h2>50+</h2>
-                <p>Free PDF Notes</p>
-            </div>
-            <div class="stat-box">
-                <h2>5000+</h2>
-                <p>Happy Students</p>
-            </div>
-        </div>
-    </div>
+<footer>
+  <div class="footer-logo-wrap">
+    <div class="logo-fallback">R</div>
+    <span class="footer-logo-text">Raza<span>agripoint</span></span>
+  </div>
+  <div class="footer-copy">
+    © 2026 Razaagripoint · Elevating Agriculture Education<br/>
+    Designed by <strong>MUSHAHID RAZA</strong> ❤️ for BSc Agriculture Students
+  </div>
+</footer>
 
-    <!-- SEMESTERS SECTION (Links Untouched) -->
-    <div id="semesters" class="section-container">
-        <h2 class="section-title">B.Sc. Agriculture (Honors)</h2>
-        <h2 style="text-align: center;">Mahatma Jyotibha Phoole Rohelkhand University and All affiliated Colleges</h2>
-        <p class="section-subtitle">Click on your current semester to access syllabus, notes, and tests.</p>
-        
-        <div class="semester-grid">
-            <a href="semester1.html" class="semester-card"><h3>1st Semester</h3><p>Explore Syllabus ➔</p></a>
-            <a href="semester2.html" class="semester-card"><h3>2nd Semester</h3><p>Explore Syllabus ➔</p></a>
-            <a href="semester3.html" class="semester-card"><h3>3rd Semester</h3><p>Explore Syllabus ➔</p></a>
-            <a href="semester4.html" class="semester-card"><h3>4th Semester</h3><p>Explore Syllabus ➔</p></a>
-            <a href="semester5.html" class="semester-card"><h3>5th Semester</h3><p>Explore Syllabus ➔</p></a>
-            <a href="semester6.html" class="semester-card"><h3>6th Semester</h3><p>Explore Syllabus ➔</p></a>
-        </div>
-    </div>
+<script>
+  // 1. Mobile Menu Toggle
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('active');
+  }
 
-    <!-- About & Community Section -->
-    <div id="about" class="about-community">
-       <!-- About the Creator -->
-        <div class="about-box">
-            <h3>👨‍🏫 About Razaagripoint</h3>
-            <p>Hello future Agri-Professionals! Welcome to Razaagripoint, a platform built specifically for BSc Agriculture students. My aim is to simplify tough agricultural concepts into easy-to-understand lectures and notes.</p>
-            <p>Created and managed by <strong>Mushahid</strong>, this platform provides everything you need—from Agronomy to Genetics—all strictly based on ICAR guidelines, absolutely free of cost.</p>
-            
-            <!-- Naya 'Know more about Admin' Button -->
-            <a href="about_admin.html" style="background-color: var(--primary-green); color: white; padding: 10px 25px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block; margin-top: 15px; box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2); transition: 0.3s;" onmouseover="this.style.backgroundColor='var(--dark-green)'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='var(--primary-green)'; this.style.transform='scale(1)'">
-                Know more about Admin ➔
-            </a>
-        </div>
+  // 2. Dark Mode Toggle
+  function toggleTheme() {
+    const body = document.body;
+    const btn = document.querySelector('.theme-toggle');
+    
+    if (body.getAttribute('data-theme') === 'dark') {
+      body.removeAttribute('data-theme');
+      btn.innerText = '🌙 Dark';
+      localStorage.setItem('theme', 'light');
+    } else {
+      body.setAttribute('data-theme', 'dark');
+      btn.innerText = '☀️ Light';
+      localStorage.setItem('theme', 'dark');
+    }
+  }
 
-        <!-- Join Community -->
-        <div class="community-box">
-            <h3>Join Our Community</h3>
-            <p>Never miss an update! Join our Telegram channel to get instant notifications about new PDF uploads, exam tips, and video lectures.</p>
-            <!-- Replace # with your actual Telegram link -->
-            <a href="https://t.me/razaagripoint" target="_blank" class="btn-telegram">📱 Join Telegram Group</a>
-        </div>
-    </div>
+  // 3. Check saved theme on load
+  window.onload = () => {
+    if(localStorage.getItem('theme') === 'dark') {
+      document.body.setAttribute('data-theme', 'dark');
+      document.querySelector('.theme-toggle').innerText = '☀️ Light';
+    }
+  };
 
-    <!-- Topper's Study Tips Section -->
-    <div class="tips-section">
-        <div style="text-align: center;">
-            <h2 class="section-title" style="color: var(--accent-yellow);">Topper's Study Tips</h2>
-            <p class="section-subtitle" style="color: #e8f5e9;">Smart strategies to score higher in your Agriculture exams.</p>
-        </div>
-        <div class="tips-grid">
-            <div class="tip-card">
-                <h4>🎯 Focus on Fundamentals</h4>
-                <p>Agriculture subjects like Agronomy and Soil Science require a strong grip on basic concepts. Always clear your doubts before moving to advanced topics.</p>
-            </div>
-            <div class="tip-card">
-                <h4>📝 Solve Previous Papers</h4>
-                <p>We provide previous year question papers in the PDF sections. Solving them gives you a clear idea of the exam pattern and frequently asked questions.</p>
-            </div>
-            <div class="tip-card">
-                <h4>⏱️ Use Mock Tests</h4>
-                <p>Don't just read! Use our built-in interactive Mock Tests at the bottom of every semester page to evaluate your memory and preparation level.</p>
-            </div>
-        </div>
-    </div>
+  // 4. Ripple & GLOW Generator + Delayed Navigation
+  document.addEventListener('click', function(e) {
+    const clickableElement = e.target.closest('.ripple-element, .btn-hero-main, .card-cta, .btn-about-pw, .btn-tg, .sem-card, .btn-nav-fill');
+    const linkElement = e.target.closest('a');
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 <span>Razaagripoint</span> | Elevating Agriculture Education</p>
-         <p style="font-size: 14px; color: #88;">Designed by <b>MUSHAHID RAZA</b> with ❤️ for BSc Agriculture Students</p>
-    </footer>
+    // Generate Ripple & Glow
+    if (clickableElement) {
+      if(window.getComputedStyle(clickableElement).position === 'static') {
+        clickableElement.style.position = 'relative';
+      }
+      
+      if(!clickableElement.classList.contains('notice-ticker')) {
+         clickableElement.style.overflow = 'hidden';
+      }
+
+      // ADD GLOW CLASS
+      clickableElement.classList.add('click-glow');
+
+      // Create Ripple Circle
+      const circle = document.createElement('span');
+      const diameter = Math.max(clickableElement.clientWidth, clickableElement.clientHeight);
+      const radius = diameter / 2;
+
+      const rect = clickableElement.getBoundingClientRect();
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${e.clientX - rect.left - radius}px`;
+      circle.style.top = `${e.clientY - rect.top - radius}px`;
+      circle.classList.add('ripple');
+
+      const existingRipple = clickableElement.querySelector('.ripple');
+      if (existingRipple) {
+        existingRipple.remove();
+      }
+      clickableElement.appendChild(circle);
+
+      // Remove the glow class after the animation completes (400ms)
+      setTimeout(() => {
+        clickableElement.classList.remove('click-glow');
+      }, 400);
+    }
+
+    // Delayed Navigation
+    if (linkElement && linkElement.href) {
+      const href = linkElement.getAttribute('href');
+      const target = linkElement.getAttribute('target');
+
+      // Delay for internal links only (400ms delay to match the glow duration)
+      if (href && !href.startsWith('#') && target !== '_blank' && !href.startsWith('javascript')) {
+        e.preventDefault(); 
+        setTimeout(() => {
+          window.location.href = href;
+        }, 400); 
+      }
+    }
+  });
+</script>
 
 </body>
 </html>
