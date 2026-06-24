@@ -462,76 +462,110 @@
 
     .sec-sub { font-size: 0.95rem; color: var(--gray); line-height: 1.7; max-width: 600px; }
 
-    /* ── SEMESTER CARDS ── */
+    /* ── SEMESTER CARDS (FIXED 4-SIDE BORDER + HEAVY 3D) ── */
     .semester-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px; margin-top: 44px;
+      gap: 30px; 
+      margin-top: 44px;
     }
 
     .sem-card {
-      background: var(--white);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 28px 24px;
+      background: #ffffff; /* Card ke andar ka color white rakha hai taki text clear dikhe */
+      
+      /* YAHAN BORDER THEEK KIYA HAI: Charo taraf clear dark-gray border */
+      border: 2px solid #9ca3af !important; 
+      border-radius: 20px;
+      padding: 32px 24px;
       text-decoration: none;
       display: block;
-      transition: all 0.25s;
+      transition: all 0.3s ease-in-out; 
       position: relative;
-      overflow: hidden;
+      
+      /* REAL 3D EFFECT: Ek solid shadow aur ek blur shadow ka mix */
+      box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.12), /* Badi shadow */
+        0 4px 8px rgba(0, 0, 0, 0.06);   /* Choti shadow jo ubhra hua feel degi */
     }
 
+    /* Dark mode ke liye alag border color */
+    [data-theme="dark"] .sem-card {
+      background: #1e293b;
+      border: 2px solid #475569 !important;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* TOP LINE HATA DI HAI - Taki top border pura dikhe */
     .sem-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--green), var(--orange));
-      transform: scaleX(0); transform-origin: left;
-      transition: transform 0.3s;
+      display: none; 
     }
 
-    .sem-card:hover::before { transform: scaleX(1); }
-
+    /* HOVER PAR 3D POP-OUT EFFECT */
     .sem-card:hover {
-      border-color: var(--orange);
-      box-shadow: 0 8px 30px rgba(255,107,53,0.15);
-      transform: translateY(-4px);
+      transform: translateY(-10px); /* Card upar uthega */
+      border-color: var(--orange) !important; /* Charo taraf ka border Orange ho jayega */
+      
+      /* Upar uthne par shadow aur dark aur orange ho jayegi */
+      box-shadow: 
+        0 20px 40px rgba(255, 107, 53, 0.2), 
+        0 8px 15px rgba(255, 107, 53, 0.1);
     }
 
     .sem-top {
       display: flex; align-items: center;
-      justify-content: space-between; margin-bottom: 16px;
+      justify-content: space-between; margin-bottom: 20px;
     }
 
     .sem-pill {
-      background: var(--green-light);
-      color: var(--green);
+      background: linear-gradient(135deg, var(--orange-dark), var(--green-dark));
+      color: rgb(255, 255, 255);
       font-family: 'Poppins', sans-serif;
-      font-weight: 700; font-size: 0.72rem;
-      padding: 4px 12px; border-radius: 20px;
+      font-weight: 800; font-size: 1rem;
+      padding: 8px 16px; border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(241, 4, 4, 0.3);
     }
 
-    .sem-icon { font-size: 1.8rem; }
+    .sem-icon { 
+      font-size: 3rem; 
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      width: 70px; height: 70px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 14px; 
+    }
+
+    [data-theme="dark"] .sem-icon {
+      background: #324677;
+      border-color: #13f3e7;
+    }
 
     .sem-card h3 {
       font-family: 'Poppins', sans-serif;
-      font-weight: 800; font-size: 1.25rem;
-      color: var(--dark); margin-bottom: 8px;
+      font-weight: 800; font-size: 1.35rem;
+      color: var(--green-dark); margin-bottom: 10px;
     }
 
     .sem-card p {
-      font-size: 0.83rem; color: var(--gray); margin-bottom: 20px;
+      font-size: 1rem; color: var(--dark); margin-bottom: 24px;
+      line-height: 1.6;
     }
 
     .sem-btn {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: 'Poppins', sans-serif;
-      font-weight: 700; font-size: 0.82rem;
-      color: var(--orange);
-      transition: gap 0.2s;
+      font-weight: 700; font-size: 1.1rem;
+      color: var(--green-light);
+      background: var(--orange-dark);
+      padding: 10px 40px;
+      border-radius: 10px;
+      transition: all 0.3s;
     }
 
-    .sem-card:hover .sem-btn { gap: 10px; }
+    .sem-card:hover .sem-btn { 
+      gap: 12px; 
+      background: var(--orange);
+      color: rgb(221, 16, 16);
+    }
 
     /* ── ABOUT + COMMUNITY ── */
     .two-col-section {
@@ -560,36 +594,36 @@
     }
 
     .about-card-pw .avatar {
-      width: 64px; height: 64px;
-      border-radius: 50%;
+      width: 120px; height: 120px;
+      border-radius: 1000%;
       background: linear-gradient(135deg, var(--green), var(--orange));
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem; margin-bottom: 20px;
+      font-size: 4rem; margin-bottom: 20px;
     }
 
     .about-card-pw h3 {
       font-family: 'Poppins', sans-serif;
-      font-weight: 800; font-size: 1.2rem;
+      font-weight: 800; font-size: 1.8rem;
       color: var(--dark); margin-bottom: 14px;
     }
 
     .about-card-pw p {
-      font-size: 0.9rem; color: var(--gray);
+      font-size: 1.2rem; color: var(--dark);
       line-height: 1.75; margin-bottom: 12px;
     }
 
     .about-card-pw p strong { color: var(--dark); }
 
     .btn-about-pw {
-      display: inline-flex; align-items: center; gap: 8px;
+      display: inline-flex; align-items: center; gap: 10px;
       font-family: 'Poppins', sans-serif;
-      font-weight: 700; font-size: 0.88rem;
-      color: white; background: var(--green);
-      border: none; padding: 12px 28px;
+      font-weight: 700; font-size: 1.2rem;
+      color: white; background: var(--green-dark);
+      border: none; padding: 19px 28px;
       border-radius: 10px; cursor: pointer;
       text-decoration: none; margin-top: 8px;
-      transition: all 0.2s;
-      box-shadow: 0 4px 14px rgba(26,122,74,0.3);
+      transition: all 0.5s;
+      box-shadow: 0 4px 16px rgba(30, 122, 76, 0.3);
     }
 
     .btn-about-pw:hover { background: var(--green-dark); transform: translateY(-1px); }
@@ -978,8 +1012,10 @@
 <div id="about" class="two-col-section">
   <div class="two-col-inner">
     <div class="about-card-pw">
-      <div class="avatar">👨‍🏫</div>
-      <h3>About Razaagripoint</h3>
+     <div class="avatar" style="width: 300px; height: 300px; overflow: hidden; background: none; border: 3px solid var(--orange);">
+  <img src="mushahid.jpeg" alt="Mushahid Raza" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+      <h3>About Mushahid Raza</h3>
       <p>Hello future Agri-Professionals! Welcome to Razaagripoint — a platform built specifically for BSc Agriculture students to simplify tough concepts into easy-to-understand lectures and notes.</p>
       <p>Created and managed by <strong>Mushahid Raza</strong>, this platform provides everything you need — from Agronomy to Genetics — all strictly based on ICAR guidelines, absolutely free of cost.</p>
       <a href="about_admin.html" class="btn-about-pw ripple-element">Know More About Admin ➔</a>
@@ -1024,12 +1060,14 @@
 
 <footer>
   <div class="footer-logo-wrap">
-    <div class="logo-fallback">R</div>
-    <span class="footer-logo-text">Raza<span>agripoint</span></span>
+    <div class="avatar" style="width: 100px; height: 100px; overflow: hidden; background: none; border: 3px solid var(--orange);">
+  <img src="mushahid.jpeg" alt="Mushahid Raza" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+    <span class="footer-logo-text">Raza<span>Agripoint</span></span>
   </div>
   <div class="footer-copy">
-    © 2026 Razaagripoint · Elevating Agriculture Education<br/>
-    Designed by <strong>MUSHAHID RAZA</strong> ❤️ for BSc Agriculture Students
+   <b> © 2026 Razaagripoint · Elevating Agriculture Education<br/>
+    Designed by <strong>MUSHAHID RAZA</strong> ❤️ for BSc Agriculture Students</b>
   </div>
 </footer>
 
