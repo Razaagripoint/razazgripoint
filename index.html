@@ -1550,16 +1550,57 @@
     }, {passive:true});
   }
 </script>
+        <!-- ============================================== -->
+<!-- 1. PWA SERVICE WORKER & UPDATE POPUP LOGIC     -->
+<!-- ============================================== -->
+
+<!-- Update Available Popup UI -->
+<div id="updatePopup" style="display:none; position:fixed; bottom:20px; left:5%; right:5%; width: 90%; background:#1b5e20; color:#fff; padding:15px; border-radius:10px; text-align:center; z-index:10001; box-shadow:0 5px 15px rgba(0,0,0,0.3); font-family: 'Poppins', sans-serif;">
+    <p style="margin: 0 0 10px 0; font-size: 16px;">New version available! 🎉</p>
+    <button id="updateBtn" style="background:#ffca28; color:#000; border:none; padding:10px 20px; border-radius:50px; cursor:pointer; font-weight:bold; font-size: 15px;">Update Now</button>
+</div>
+
+<!-- Service Worker Registration & Auto-Refresh Script -->
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/razaagripoint/service-worker.js');
-}
+    let newWorker;
+    const updatePopup = document.getElementById('updatePopup');
+    const updateBtn = document.getElementById('updateBtn');
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/razaagripoint/service-worker.js').then(reg => {
+            reg.addEventListener('updatefound', () => {
+                newWorker = reg.installing;
+                newWorker.addEventListener('statechange', () => {
+                    // Jab naya update download ho jaye tab popup dikhao
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        updatePopup.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+        // Update Now dabane par purana cache replace karo
+        updateBtn.addEventListener('click', () => {
+            if (newWorker) {
+                newWorker.postMessage('SKIP_WAITING');
+            }
+        });
+
+        // Naya service worker activate hote hi page refresh karo
+        let refreshing;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+                window.location.reload();
+                refreshing = true;
+            }
+        });
+    }
 </script>
-  
-<!-- Custom Install App Button -->
-<button id="installAppBtn" class="install-app-btn" style="display: none;">
-    <i class="fa-solid fa-download"></i> Install Official App
-</button>
+
+<!-- ============================================== -->
+<!-- 2. CUSTOM INSTALL APP (GLOWING BUTTON) UI & JS -->
+<!-- ============================================== -->
+
 <!-- Custom Install App Premium Glowing Button -->
 <button id="installAppBtn" class="install-app-btn" style="display: none;">
     <i class="fa-solid fa-cloud-arrow-down install-icon-hit"></i> 
@@ -1572,7 +1613,6 @@ if ('serviceWorker' in navigator) {
         position: fixed;
         bottom: 30px;
         right: 30px;
-        /* Bright Gradient - Jo Green aur Dark theme par sabse alag dikhe */
         background: linear-gradient(135deg, #ff9100 0%, #ff3d00 100%); 
         color: #ffffff;
         border: 2px solid #ffffff;
@@ -1582,37 +1622,33 @@ if ('serviceWorker' in navigator) {
         font-weight: 800;
         letter-spacing: 1px;
         cursor: pointer;
-        z-index: 9999; /* Hamesha sabse upar */
+        z-index: 9999; 
         display: flex;
         align-items: center;
         gap: 12px;
         font-family: 'Poppins', sans-serif;
         box-shadow: 0 0 15px rgba(255, 61, 0, 0.6), 0 0 30px rgba(255, 145, 0, 0.4);
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        /* Continuous Glowing Animation */
         animation: neonGlowPulse 2s infinite alternate;
     }
 
-    /* Icon Animation inside button */
     .install-icon-hit {
         font-size: 20px;
         animation: bounceIcon 1s infinite alternate;
     }
 
-    /* Glow Pulsing Effect (Zor se chamakne aur thoda kam hone ka effect) */
     @keyframes neonGlowPulse {
         0% {
             transform: scale(1);
             box-shadow: 0 0 12px rgba(255, 61, 0, 0.6), 0 0 20px rgba(255, 145, 0, 0.3);
         }
         100% {
-            transform: scale(1.05); /* Thoda bada hoga aur zyada chamkega */
+            transform: scale(1.05); 
             box-shadow: 0 0 25px rgba(255, 61, 0, 0.9), 0 0 45px rgba(255, 145, 0, 0.6);
-            border-color: #ffca28; /* Border ka colour bhi change hoga */
+            border-color: #ffca28; 
         }
     }
 
-    /* Icon Bounce Animation */
     @keyframes bounceIcon {
         0% { transform: translateY(0); }
         100% { transform: translateY(-3px); }
@@ -1624,7 +1660,6 @@ if ('serviceWorker' in navigator) {
         box-shadow: 0 0 35px rgba(255, 61, 0, 1), 0 0 60px rgba(255, 145, 0, 0.8);
     }
     
-    /* Mobile Ke Liye Full Width Glowing Banner style */
     @media (max-width: 768px) {
         .install-app-btn {
             bottom: 20px;
@@ -1650,42 +1685,30 @@ if ('serviceWorker' in navigator) {
     }
 </style>
 
-
-  <!-- PWA Install Logic -->
+<!-- Install Logic Script -->
 <script>
     let deferredPrompt;
     const installBtn = document.getElementById('installAppBtn');
 
-    // Browser jab PWA detect karega toh default pop-up ko rok kar hamara button dikhayega
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Default pop-up ko aane se roko
         e.preventDefault();
-        // Event ko save karo taaki baad me button dabane par use call kar sakein
         deferredPrompt = e;
-        // Hamara custom button screen par dikhao
         installBtn.style.display = 'flex';
     });
 
-    // Jab student hamare button par click karega
     installBtn.addEventListener('click', async () => {
-        // Button ko waapas chhupa do
         installBtn.style.display = 'none';
-        // Asli install pop-up ko screen par laao
         deferredPrompt.prompt();
-        // Check karo ki user ne install kiya ya cancel kar diya
         const { outcome } = await deferredPrompt.userChoice;
         console.log(`User response: ${outcome}`);
-        // Memory clear karo
         deferredPrompt = null;
     });
 
-    // Jab app successfully install ho jaye toh button ko hamesha ke liye chhupa do
     window.addEventListener('appinstalled', () => {
         installBtn.style.display = 'none';
         console.log('Razaagripoint App Installed Successfully!');
     });
 </script>
-  
   
 </body>
 </html>
