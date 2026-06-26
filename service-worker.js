@@ -1,44 +1,65 @@
-const CACHE_NAME = "rap-cache-v2";
+const CACHE_NAME = "rap-cache-v1";
 
-const urlsToCache = [
+const APP_ASSETS = [
   "/razaagripoint/",
   "/razaagripoint/index.html",
   "/razaagripoint/manifest.json"
 ];
 
 // Install
-self.addEventListener("install", event => {
+self.addEventListener("install", (event) => {
   self.skipWaiting();
 
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(APP_ASSETS);
     })
   );
 });
 
 // Activate
-self.addEventListener("activate", event => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
           if (key !== CACHE_NAME) {
             return caches.delete(key);
           }
         })
-      );
-    })
+      )
+    )
   );
 
   self.clients.claim();
 });
 
 // Fetch
-self.addEventListener("fetch", event => {
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
+    caches.match(event.request).then((cached) => {
+      const networkFetch = fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, clone);
+            });
+          }
+          return response;
+        })
+        .catch(() => cached);
+
+      return cached || networkFetch;
     })
   );
+});
+
+// Listen for update command
+self.addEventListener("message", (event) => {
+  if (event.data === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
