@@ -1555,6 +1555,89 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/razaagripoint/service-worker.js');
 }
 </script>
+  
+<!-- Custom Install App Button -->
+<button id="installAppBtn" class="install-app-btn" style="display: none;">
+    <i class="fa-solid fa-download"></i> Install Official App
+</button>
 
+<style>
+    /* Install Button Premium Design */
+    .install-app-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background: linear-gradient(135deg, #1b5e20, #4caf50); /* Green Theme */
+        color: #ffffff;
+        border: 2px solid #ffca28; /* Yellow Border */
+        padding: 14px 24px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 700;
+        box-shadow: 0 8px 20px rgba(27, 94, 32, 0.4);
+        cursor: pointer;
+        z-index: 9999; /* Always on top */
+        align-items: center;
+        gap: 10px;
+        font-family: 'Poppins', sans-serif;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .install-app-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(27, 94, 32, 0.5);
+    }
+    
+    /* Mobile view settings */
+    @media (max-width: 768px) {
+        .install-app-btn {
+            bottom: 20px;
+            right: 50%;
+            transform: translateX(50%); /* Center the button on phones */
+            width: 85%;
+            justify-content: center;
+        }
+        .install-app-btn:hover {
+            transform: translateX(50%) scale(1.02);
+        }
+    }
+</style>
+
+  <!-- PWA Install Logic -->
+<script>
+    let deferredPrompt;
+    const installBtn = document.getElementById('installAppBtn');
+
+    // Browser jab PWA detect karega toh default pop-up ko rok kar hamara button dikhayega
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Default pop-up ko aane se roko
+        e.preventDefault();
+        // Event ko save karo taaki baad me button dabane par use call kar sakein
+        deferredPrompt = e;
+        // Hamara custom button screen par dikhao
+        installBtn.style.display = 'flex';
+    });
+
+    // Jab student hamare button par click karega
+    installBtn.addEventListener('click', async () => {
+        // Button ko waapas chhupa do
+        installBtn.style.display = 'none';
+        // Asli install pop-up ko screen par laao
+        deferredPrompt.prompt();
+        // Check karo ki user ne install kiya ya cancel kar diya
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response: ${outcome}`);
+        // Memory clear karo
+        deferredPrompt = null;
+    });
+
+    // Jab app successfully install ho jaye toh button ko hamesha ke liye chhupa do
+    window.addEventListener('appinstalled', () => {
+        installBtn.style.display = 'none';
+        console.log('Razaagripoint App Installed Successfully!');
+    });
+</script>
+  
+  
 </body>
 </html>
