@@ -1560,48 +1560,96 @@ if ('serviceWorker' in navigator) {
 <button id="installAppBtn" class="install-app-btn" style="display: none;">
     <i class="fa-solid fa-download"></i> Install Official App
 </button>
+<!-- Custom Install App Premium Glowing Button -->
+<button id="installAppBtn" class="install-app-btn" style="display: none;">
+    <i class="fa-solid fa-cloud-arrow-down install-icon-hit"></i> 
+    <span class="btn-text-glow">DOWNLOAD APP</span>
+</button>
 
 <style>
-    /* Install Button Premium Design */
+    /* Premium Neon Glowing Button Design */
     .install-app-btn {
         position: fixed;
-        bottom: 25px;
-        right: 25px;
-        background: linear-gradient(135deg, #1b5e20, #4caf50); /* Green Theme */
+        bottom: 30px;
+        right: 30px;
+        /* Bright Gradient - Jo Green aur Dark theme par sabse alag dikhe */
+        background: linear-gradient(135deg, #ff9100 0%, #ff3d00 100%); 
         color: #ffffff;
-        border: 2px solid #ffca28; /* Yellow Border */
-        padding: 14px 24px;
+        border: 2px solid #ffffff;
+        padding: 16px 28px;
         border-radius: 50px;
-        font-size: 16px;
-        font-weight: 700;
-        box-shadow: 0 8px 20px rgba(27, 94, 32, 0.4);
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 1px;
         cursor: pointer;
-        z-index: 9999; /* Always on top */
+        z-index: 9999; /* Hamesha sabse upar */
+        display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         font-family: 'Poppins', sans-serif;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 0 15px rgba(255, 61, 0, 0.6), 0 0 30px rgba(255, 145, 0, 0.4);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Continuous Glowing Animation */
+        animation: neonGlowPulse 2s infinite alternate;
+    }
+
+    /* Icon Animation inside button */
+    .install-icon-hit {
+        font-size: 20px;
+        animation: bounceIcon 1s infinite alternate;
+    }
+
+    /* Glow Pulsing Effect (Zor se chamakne aur thoda kam hone ka effect) */
+    @keyframes neonGlowPulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 12px rgba(255, 61, 0, 0.6), 0 0 20px rgba(255, 145, 0, 0.3);
+        }
+        100% {
+            transform: scale(1.05); /* Thoda bada hoga aur zyada chamkega */
+            box-shadow: 0 0 25px rgba(255, 61, 0, 0.9), 0 0 45px rgba(255, 145, 0, 0.6);
+            border-color: #ffca28; /* Border ka colour bhi change hoga */
+        }
+    }
+
+    /* Icon Bounce Animation */
+    @keyframes bounceIcon {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-3px); }
     }
 
     .install-app-btn:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 25px rgba(27, 94, 32, 0.5);
+        background: linear-gradient(135deg, #ff3d00 0%, #d50000 100%);
+        transform: translateY(-8px) scale(1.08) !important;
+        box-shadow: 0 0 35px rgba(255, 61, 0, 1), 0 0 60px rgba(255, 145, 0, 0.8);
     }
     
-    /* Mobile view settings */
+    /* Mobile Ke Liye Full Width Glowing Banner style */
     @media (max-width: 768px) {
         .install-app-btn {
             bottom: 20px;
-            right: 50%;
-            transform: translateX(50%); /* Center the button on phones */
-            width: 85%;
+            right: 5%;
+            left: 5%;
+            width: 90%;
             justify-content: center;
+            font-size: 16px;
+            padding: 15px 0;
+            animation: neonGlowPulseMobile 2s infinite alternate;
         }
-        .install-app-btn:hover {
-            transform: translateX(50%) scale(1.02);
+    }
+
+    @keyframes neonGlowPulseMobile {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 12px rgba(255, 61, 0, 0.6);
+        }
+        100% {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(255, 61, 0, 0.9), 0 0 45px rgba(255, 145, 0, 0.5);
         }
     }
 </style>
+
 
   <!-- PWA Install Logic -->
 <script>
