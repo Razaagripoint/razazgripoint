@@ -992,12 +992,39 @@
 </head>
 <body>
 
-<div id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #F7F7F3; z-index: 99999; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-    <i class="fa-solid fa-seedling" style="font-size: 60px; color: #1a7a4a; margin-bottom: 20px; animation: bounceIcon 0.8s infinite alternate;"></i>
-    <h2 style="color: #1a1a2e; font-family: 'Poppins', sans-serif; font-size: 20px;">Checking Security...</h2>
-</div>
+<!-- Loading Screen -->
+    <div id="loadingScreen" style="position: fixed; top:0; left:0; width: 100%; height: 100%; background: #F7F7F3; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <i class="fa-solid fa-seedling" style="font-size: 50px; color: #6A8668; margin-bottom: 20px;"></i>
+        <h2 style="color: #2C332C; font-family: 'Poppins', sans-serif; font-size: 20px;">Loading...</h2>
+    </div>
 
-<div id="mainContent" style="display: none;">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1KZR4aszinZX3yhHHxO5nv3kglM3Z1vM",
+            authDomain: "razaagripoint9.firebaseapp.com",
+            projectId: "razaagripoint9",
+            storageBucket: "razaagripoint9.firebasestorage.app",
+            messagingSenderId: "90899993212",
+            appId: "1:90899993212:web:5699cd8764648f4f2d6ff9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const loader = document.getElementById('loadingScreen');
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Agar login hai, to parda hata do
+                loader.style.display = 'none';
+            } else {
+                // Agar login nahi hai, to login page par bhej do
+                window.location.href = "login.html";
+            }
+        });
+    </script>
 
 <nav>
   <a href="index.html" class="nav-logo ripple-element">
