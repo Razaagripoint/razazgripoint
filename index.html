@@ -202,10 +202,29 @@
       color: var(--dark);
     }
 
+    /* Menu Overlay: For smooth closing animation when clicking outside */
+    .menu-overlay {
+      position: fixed;
+      top: 72px; /* Starts just below navbar */
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 72px);
+      background: rgba(0,0,0,0.6);
+      z-index: 198;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease-in-out;
+    }
+    .menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
     .mobile-menu {
       position: fixed;
       top: 72px; left: -100%;
-      width: 80%; height: calc(100vh - 72px);
+      width: 260px; /* NEW: Half Screen size */
+      height: calc(100vh - 72px);
       background: var(--white);
       box-shadow: 4px 0 15px rgba(0,0,0,0.1);
       display: flex; flex-direction: column;
@@ -944,7 +963,10 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       nav { padding: 0 15px; }
+      
+      /* Mobile me bas nav-logo, theme button aur hamburger dikhega. Baki sab hide! */
       .nav-links, .nav-right .btn-nav-outline, .nav-right .btn-nav-fill, .nav-right #logoutBtnDesk { display: none; }
+      
       .nav-logo-text { font-size: 1.1rem; }
       .theme-toggle { padding: 6px 12px; font-size: 0.8rem; }
       .hamburger { display: block; margin-left: auto; }
@@ -1052,19 +1074,24 @@
       <a href="https://t.me/razaagripoint" target="_blank" class="btn-nav-outline ripple-element">Join Telegram</a>
       <a href="#semesters" class="btn-nav-fill ripple-element">Get Started ➔</a>
       
-      <!-- Logout Button (Default chupa hua rahega) -->
+      <!-- Desktop Logout Button -->
       <button id="logoutBtnDesk" class="btn-nav-outline ripple-element" style="border-color: #d32f2f; color: #d32f2f; margin-left: 10px; display: none;">Logout</button>
       
       <button class="hamburger ripple-element" onclick="toggleMobileMenu()">☰</button>
     </div>
   </nav>
 
+  <!-- Yeh woh kaala parda hai jo menu ke piche dikhega, ispe click karte hi menu band -->
+  <div class="menu-overlay" id="menuOverlay" onclick="toggleMobileMenu()"></div>
+
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html" onclick="toggleMobileMenu()">Home</a>
     <a href="#semesters" onclick="toggleMobileMenu()">Syllabus</a>
     <a href="#about" onclick="toggleMobileMenu()">About</a>
     <a href="https://t.me/razaagripoint" target="_blank">Join Telegram</a>
-    <a href="#" id="logoutBtnMob" style="color: #d32f2f; font-weight: 800; display: none;">Logout</a>
+    
+    <!-- YAHAN AAYEGA DYNAMIC BUTTON (Login / Logout) -->
+    <a href="login.html" id="authBtnMob" style="color: var(--green); font-weight: 800;">Login / Sign Up</a>
   </div>
 
   <div id="mockTestTicker" class="notice-ticker ripple-element" style="background: linear-gradient(90deg, #ffeb3b, #ffc107); border-bottom: 3px solid #f57f17; padding: 14px 20px; font-size: 18px; cursor: pointer; display: flex; align-items: center; overflow: hidden;">
@@ -1455,10 +1482,13 @@
 
   <!-- ALL SCRIPTS (UI + Firebase) -->
   <script>
-    // 1. Mobile Menu Toggle
+    // 1. Mobile Menu Toggle (Overlay Logic Added)
     function toggleMobileMenu() {
       const menu = document.getElementById('mobileMenu');
+      const overlay = document.getElementById('menuOverlay');
+      
       menu.classList.toggle('active');
+      overlay.classList.toggle('active');
     }
 
     // 2. Dark Mode Toggle
@@ -1522,34 +1552,33 @@
         }, 400);
       }
 
-      // --- NEW SMART LOGIN LOCK LOGIC --- //
+      // --- SMART LOGIN LOCK LOGIC --- //
 
-      // 1. Agar kisi ne Ticker (Mock test) par click kiya
+      // Agar kisi ne Ticker (Mock test) par click kiya
       const ticker = e.target.closest('#mockTestTicker');
       if (ticker) {
           if (!window.isUserLoggedIn) {
-              window.location.href = 'login.html'; // Direct Login Bhejo
+              window.location.href = 'login.html'; 
           } else {
-              window.open('cropphysiomock.html', '_blank'); // Login hai toh test do
+              window.open('cropphysiomock.html', '_blank'); 
           }
           return;
       }
 
-      // 2. Agar kisi ne Button ya Link par click kiya
+      // Agar kisi ne Button ya Link par click kiya
       if (linkElement && linkElement.href) {
         const href = linkElement.getAttribute('href');
         const target = linkElement.getAttribute('target');
 
-        // Check karega ki kya ye koi andar ka page hai (jaise semester1.html)
+        // Check karega ki kya ye koi andar ka page hai 
         const isProtected = href.includes('.html') && !href.includes('index.html') && !href.includes('login.html');
 
         if (isProtected && !window.isUserLoggedIn) {
            e.preventDefault(); // Rok do
-           window.location.href = "login.html"; // Login Page Par Feko
+           window.location.href = "login.html"; // Login Page Par Bhejo
            return;
         }
 
-        // Agar protected nahi hai (ya user login hai), toh normal chalne do
         if (href && !href.startsWith('#') && target !== '_blank' && !href.startsWith('javascript')) {
           e.preventDefault(); 
           setTimeout(() => {
@@ -1690,7 +1719,7 @@
     });
   </script>
 
-  <!-- FIREBASE SECURITY SCRIPT (Smart Version) -->
+  <!-- FIREBASE SECURITY SCRIPT (Smart Version with Dynamic Mobile Auth Button) -->
   <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
       import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
@@ -1710,38 +1739,55 @@
       // Global variable status check karne ke liye
       window.isUserLoggedIn = false;
 
-      // Sirf status check karo, koi parda mat lagao, koi redirect mat karo
-      onAuthStateChanged(auth, (user) => {
-          if (user) {
-              window.isUserLoggedIn = true;
-              // Agar login hai to Logout button dikhao
-              document.getElementById('logoutBtnDesk').style.display = 'inline-block';
-              document.getElementById('logoutBtnMob').style.display = 'block';
-          } else {
-              window.isUserLoggedIn = false;
-              // Agar login nahi hai to Logout button chhupa do
-              document.getElementById('logoutBtnDesk').style.display = 'none';
-              document.getElementById('logoutBtnMob').style.display = 'none';
-          }
-      });
+      const authBtnMob = document.getElementById('authBtnMob');
+      const logoutBtnDesk = document.getElementById('logoutBtnDesk');
 
       // Logout Logic
       const handleLogout = (e) => {
           e.preventDefault();
           signOut(auth).then(() => {
-              // Logout hote hi page refresh kar do
               window.location.reload();
           }).catch((error) => {
               alert("Logout failed: " + error.message);
           });
       };
 
-      // Desktop & Mobile Logout buttons
-      const logoutBtnDesk = document.getElementById('logoutBtnDesk');
-      const logoutBtnMob = document.getElementById('logoutBtnMob');
+      onAuthStateChanged(auth, (user) => {
+          if (user) {
+              window.isUserLoggedIn = true;
+              
+              // Desktop Button Update
+              if(logoutBtnDesk) {
+                  logoutBtnDesk.style.display = 'inline-block';
+                  logoutBtnDesk.onclick = handleLogout;
+              }
+              
+              // Mobile Button Update (Change to Logout)
+              if(authBtnMob) {
+                  authBtnMob.innerText = "Logout";
+                  authBtnMob.style.color = "#d32f2f"; // Lal rang (Red)
+                  authBtnMob.href = "#"; 
+                  authBtnMob.onclick = (e) => { 
+                      toggleMobileMenu(); 
+                      handleLogout(e); 
+                  };
+              }
 
-      if(logoutBtnDesk) logoutBtnDesk.addEventListener('click', handleLogout);
-      if(logoutBtnMob) logoutBtnMob.addEventListener('click', handleLogout);
+          } else {
+              window.isUserLoggedIn = false;
+              
+              // Desktop Button Update
+              if(logoutBtnDesk) logoutBtnDesk.style.display = 'none';
+              
+              // Mobile Button Update (Change to Login/Signup)
+              if(authBtnMob) {
+                  authBtnMob.innerText = "Login / Sign Up";
+                  authBtnMob.style.color = "var(--green)"; // Hara rang (Green)
+                  authBtnMob.href = "login.html";
+                  authBtnMob.onclick = toggleMobileMenu;
+              }
+          }
+      });
   </script>
   
 </body>
