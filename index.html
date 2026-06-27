@@ -1709,6 +1709,31 @@
         console.log('Razaagripoint App Installed Successfully!');
     });
 </script>
+      <!-- Firebase Security Guard -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1KZR4aszinZX3yhHHxO5nv3kglM3Z1vM",
+            authDomain: "razaagripoint9.firebaseapp.com",
+            projectId: "razaagripoint9",
+            storageBucket: "razaagripoint9.firebasestorage.app",
+            messagingSenderId: "90899993212",
+            appId: "1:90899993212:web:5699cd8764648f4f2d6ff9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Checking Login Status
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // Agar login nahi hai, to wapas login page par bhej do
+                window.location.replace("login.html");
+            }
+        });
+    </script>
   
 </body>
 </html>
