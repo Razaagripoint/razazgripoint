@@ -223,7 +223,7 @@
     .mobile-menu {
       position: fixed;
       top: 72px; left: -100%;
-      width: 260px; /* NEW: Half Screen size */
+      width: 260px; /* Half Screen size */
       height: calc(100vh - 72px);
       background: var(--white);
       box-shadow: 4px 0 15px rgba(0,0,0,0.1);
@@ -964,8 +964,8 @@
     @media (max-width: 900px) {
       nav { padding: 0 15px; }
       
-      /* Mobile me bas nav-logo, theme button aur hamburger dikhega. Baki sab hide! */
-      .nav-links, .nav-right .btn-nav-outline, .nav-right .btn-nav-fill, .nav-right #logoutBtnDesk { display: none; }
+      /* Desktop nav items ko hide kiya gaya hai taki space bache */
+      .nav-links, .nav-right .btn-nav-outline, .nav-right .btn-nav-fill { display: none; }
       
       .nav-logo-text { font-size: 1.1rem; }
       .theme-toggle { padding: 6px 12px; font-size: 0.8rem; }
@@ -1073,15 +1073,10 @@
       <button class="theme-toggle ripple-element" onclick="toggleTheme()">🌙 Dark</button>
       <a href="https://t.me/razaagripoint" target="_blank" class="btn-nav-outline ripple-element">Join Telegram</a>
       <a href="#semesters" class="btn-nav-fill ripple-element">Get Started ➔</a>
-      
-      <!-- Desktop Logout Button -->
-      <button id="logoutBtnDesk" class="btn-nav-outline ripple-element" style="border-color: #d32f2f; color: #d32f2f; margin-left: 10px; display: none;">Logout</button>
-      
       <button class="hamburger ripple-element" onclick="toggleMobileMenu()">☰</button>
     </div>
   </nav>
 
-  <!-- Yeh woh kaala parda hai jo menu ke piche dikhega, ispe click karte hi menu band -->
   <div class="menu-overlay" id="menuOverlay" onclick="toggleMobileMenu()"></div>
 
   <div class="mobile-menu" id="mobileMenu">
@@ -1090,7 +1085,8 @@
     <a href="#about" onclick="toggleMobileMenu()">About</a>
     <a href="https://t.me/razaagripoint" target="_blank">Join Telegram</a>
     
-    <!-- YAHAN AAYEGA DYNAMIC BUTTON (Login / Logout) -->
+    <a href="https://wa.me/919389519645" target="_blank" style="color: #25D366; font-weight: 800;"><i class="fa-brands fa-whatsapp"></i> WhatsApp Me</a>
+    
     <a href="login.html" id="authBtnMob" style="color: var(--green); font-weight: 800;">Login / Sign Up</a>
   </div>
 
@@ -1480,7 +1476,6 @@
   </button>
 
 
-  <!-- ALL SCRIPTS (UI + Firebase) -->
   <script>
     // 1. Mobile Menu Toggle (Overlay Logic Added)
     function toggleMobileMenu() {
@@ -1719,7 +1714,6 @@
     });
   </script>
 
-  <!-- FIREBASE SECURITY SCRIPT (Smart Version with Dynamic Mobile Auth Button) -->
   <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
       import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
@@ -1740,7 +1734,6 @@
       window.isUserLoggedIn = false;
 
       const authBtnMob = document.getElementById('authBtnMob');
-      const logoutBtnDesk = document.getElementById('logoutBtnDesk');
 
       // Logout Logic
       const handleLogout = (e) => {
@@ -1756,12 +1749,6 @@
           if (user) {
               window.isUserLoggedIn = true;
               
-              // Desktop Button Update
-              if(logoutBtnDesk) {
-                  logoutBtnDesk.style.display = 'inline-block';
-                  logoutBtnDesk.onclick = handleLogout;
-              }
-              
               // Mobile Button Update (Change to Logout)
               if(authBtnMob) {
                   authBtnMob.innerText = "Logout";
@@ -1775,9 +1762,6 @@
 
           } else {
               window.isUserLoggedIn = false;
-              
-              // Desktop Button Update
-              if(logoutBtnDesk) logoutBtnDesk.style.display = 'none';
               
               // Mobile Button Update (Change to Login/Signup)
               if(authBtnMob) {
