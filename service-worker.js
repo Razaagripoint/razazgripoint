@@ -55,10 +55,3 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
-
-// Listen for update command (Update popup ke button par click karne par ye chalega)
-self.addEventListener("message", (event) => {
-  if (event.data === "SKIP_WAITING") {
-    self.skipWaiting();
-  }
-});
