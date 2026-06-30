@@ -35,13 +35,63 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
         body { background-color: var(--bg-color); color: var(--text-dark); }
 
-        /* --- Header / Navigation --- */
-        nav { background-color: var(--white); padding: 18px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
-        .logo { color: var(--primary-green); font-size: 26px; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 12px; letter-spacing: -0.5px; }
-        .logo i { color: var(--accent-yellow); }
-        .back-btn { background: var(--primary-dark); color: var(--white); text-decoration: none; font-size: 15px; padding: 10px 24px; border-radius: 30px; transition: 0.3s; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .back-btn:hover { background: var(--light-green); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3); }
+              /* --- Header / Navigation --- */
+nav { 
+    background-color: var(--white); 
+    padding: 18px 5%; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+}
 
+.logo { 
+    color: var(--primary-green); 
+    font-size: 26px; 
+    font-weight: 800; 
+    text-decoration: none; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    letter-spacing: -0.5px; 
+}
+
+/* Purana icon ka color (Agar aap abhi bhi icon use kar rahe hain) */
+.logo i { 
+    color: var(--accent-yellow); 
+}
+
+/* YAHAN NAYA CODE ADD KIYA HAI: Logo Image ke liye */
+.logo-image {
+    width: 40px; /* Aapke 26px font-size ke hisaab se 40px ekdum perfect lagega */
+    height: 40px;
+    border-radius: 25%; /* Poora gol karne ke liye. Agar square halke rounded corners chahiye toh ise '8px' kar dein */
+    object-fit: cover; /* Image stretch nahi hogi */
+    border: 2px solid var(--text-dark); /* Optional: Aapke theme ke yellow color ka border, bahut sundar lagega */
+}
+
+.back-btn { 
+    background: var(--primary-dark); 
+    color: var(--white); 
+    text-decoration: none; 
+    font-size: 15px; 
+    padding: 10px 19px; 
+    border-radius: 30px; 
+    transition: 0.3s; 
+    font-weight: 600; 
+    display: flex; 
+    align-items: center; 
+    gap: 1px; 
+}
+
+.back-btn:hover { 
+    background: var(--light-green); 
+    transform: translateY(-2px); 
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3); 
+}
         /* --- Hero Section --- */
         .hero {
             background: linear-gradient(rgba(15, 62, 27, 0.85), rgba(27, 94, 32, 0.85)), url('https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
@@ -130,9 +180,12 @@
 
     <!-- Navigation -->
     <nav>
-        <a href="index.html" class="logo"><i class="fa-solid fa-wheat-awn"></i> Razaagripoint</a>
-        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Home</a>
-    </nav>
+    <a href="index.html" class="logo">
+        <img src="logo.jpeg" alt="Logo" class="logo-image">
+        Razaagripoint
+    </a>
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Home</a>
+</nav>
 
     <!-- Hero Section -->
     <div class="hero">
