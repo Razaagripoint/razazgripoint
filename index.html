@@ -1687,7 +1687,7 @@
     });
   </script>
 
-  <script type="module">
+<script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
       import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
@@ -1746,14 +1746,35 @@
           }
       });
   </script>
+
   <script>
-  // Ye code Service Worker ko normal tareeqe se start karta hai
+      function forceAppUpdate(event) {
+          if (event) event.preventDefault();
+          if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.getRegistration().then(registration => {
+                  if (registration) {
+                      registration.update().then(() => {
+                          alert("Updating to latest version...");
+                          window.location.reload(true);
+                      });
+                  } else {
+                      window.location.reload(true);
+                  }
+              });
+          } else {
+              window.location.reload(true);
+          }
+      }
+  </script>
+  
+  <script>
+  // Service Worker Registration
   if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/razaagripoint/service-worker.js')
         .then(() => console.log("Service Worker Registered Successfully!"))
         .catch(err => console.log("Service Worker Failed: ", err));
   }
-</script>
- 
+  </script>
+  
 </body>
 </html>
